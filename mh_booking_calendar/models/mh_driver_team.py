@@ -76,18 +76,6 @@ class MHDriverTeam(models.Model):
         store=True,
     )
 
-    # Vehicle assignment
-    vehicle_id = fields.Many2one(
-        'mh.vehicle',
-        string='Assigned Vehicle',
-        ondelete='set null',
-    )
-    vehicle_license_plate = fields.Char(
-        string='Vehicle Plate',
-        related='vehicle_id.license_plate',
-        readonly=True,
-    )
-
     # Capacity
     max_stops_per_day = fields.Integer(
         string='Max Stops per Day',
@@ -446,7 +434,3 @@ class MHDriverTeamMember(models.Model):
                     _('Staff member "%s" is already in this team.')
                     % record.staff_id.name
                 )
-
-
-# Import timedelta for date calculations
-from datetime import timedelta
