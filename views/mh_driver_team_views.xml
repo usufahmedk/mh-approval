@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- MH Driver Team Tree View -->
+        <record id="view_mh_driver_team_tree" model="ir.ui.view">
+            <field name="name">mh.driver.team.tree</field>
+            <field name="model">mh.driver.team</field>
+            <field name="arch" type="xml">
+                <list string="Driver Teams" decoration-success="active" decoration-muted="not active">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="team_lead_id"/>
+                    <field name="driver_count"/>
+                    <field name="vehicle_id"/>
+                    <field name="today_booking_count"/>
+                    <field name="on_time_rate"/>
+                    <field name="is_on_route"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- MH Driver Team Form View -->
+        <record id="view_mh_driver_team_form" model="ir.ui.view">
+            <field name="name">mh.driver.team.form</field>
+            <field name="model">mh.driver.team</field>
+            <field name="arch" type="xml">
+                <form string="Driver Team">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <h3>
+                                <field name="code"/>
+                            </h3>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="active"/>
+                                <field name="team_lead_id"/>
+                                <field name="vehicle_id"/>
+                            </group>
+                            <group>
+                                <field name="driver_ids"/>
+                                <field name="driver_count"/>
+                            </group>
+                        </group>
+                        <group string="Coverage">
+                            <field name="zone_ids"/>
+                            <field name="max_stops_per_day"/>
+                            <field name="max_distance_km"/>
+                        </group>
+                        <group string="Working Schedule">
+                            <group>
+                                <field name="working_hour_start"/>
+                                <field name="working_hour_end"/>
+                            </group>
+                            <group>
+                                <field name="working_days"/>
+                            </group>
+                        </group>
+                        <group string="Current Status">
+                            <group>
+                                <field name="current_location"/>
+                                <field name="last_location_update"/>
+                                <field name="is_on_route"/>
+                            </group>
+                            <group>
+                                <field name="today_booking_count"/>
+                                <field name="week_booking_count"/>
+                            </group>
+                        </group>
+                        <group string="Performance">
+                            <group>
+                                <field name="on_time_rate"/>
+                                <field name="customer_rating"/>
+                            </group>
+                            <group>
+                                <field name="total_trips"/>
+                                <field name="total_distance"/>
+                            </group>
+                        </group>
+                        <group string="Team Members">
+                            <field name="member_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="staff_id"/>
+                                    <field name="role"/>
+                                    <field name="is_active"/>
+                                </list>
+                            </field>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Driver Team Search View -->
+        <record id="view_mh_driver_team_search" model="ir.ui.view">
+            <field name="name">mh.driver.team.search</field>
+            <field name="model">mh.driver.team</field>
+            <field name="arch" type="xml">
+                <search string="Search Driver Teams">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="team_lead_id"/>
+                    <field name="vehicle_id"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="On Route" name="on_route" domain="[('is_on_route', '=', True)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- MH Driver Team Kanban View -->
+        <record id="view_mh_driver_team_kanban" model="ir.ui.view">
+            <field name="name">mh.driver.team.kanban</field>
+            <field name="model">mh.driver.team</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_card_clickable">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <field name="name"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_body">
+                                    <field name="team_lead_id"/>
+                                    <br/>
+                                    <field name="is_on_route"/>
+                                    <br/>
+                                    <field name="today_booking_count"/> bookings today
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- MH Driver Team Action -->
+        <record id="action_mh_driver_team" model="ir.actions.act_window">
+            <field name="name">Driver Teams</field>
+            <field name="res_model">mh.driver.team</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Driver Team
+                </p>
+                <p>Driver teams manage transportation and logistics for bookings.</p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_driver_team"
+            name="Driver Teams"
+            action="action_mh_driver_team"
+            parent="menu_mh_booking_root"
+            sequence="35"/>
+
+        <!-- MH Driver Team Member Tree View -->
+        <record id="view_mh_driver_team_member_tree" model="ir.ui.view">
+            <field name="name">mh.driver.team.member.tree</field>
+            <field name="model">mh.driver.team.member</field>
+            <field name="arch" type="xml">
+                <list string="Team Members">
+                    <field name="staff_id"/>
+                    <field name="team_id"/>
+                    <field name="role"/>
+                    <field name="is_active"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- MH Driver Team Member Form View -->
+        <record id="view_mh_driver_team_member_form" model="ir.ui.view">
+            <field name="name">mh.driver.team.member.form</field>
+            <field name="model">mh.driver.team.member</field>
+            <field name="arch" type="xml">
+                <form string="Team Member">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="staff_id"/>
+                                <field name="team_id"/>
+                            </group>
+                            <group>
+                                <field name="role"/>
+                                <field name="is_active"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                            </group>
+                            <group>
+                                <field name="notes"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Driver Team Member Action -->
+        <record id="action_mh_driver_team_member" model="ir.actions.act_window">
+            <field name="name">Team Members</field>
+            <field name="res_model">mh.driver.team.member</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_driver_team_member"
+            name="Team Members"
+            action="action_mh_driver_team_member"
+            parent="menu_mh_driver_team"
+            sequence="10"/>
+    </data>
+</odoo>

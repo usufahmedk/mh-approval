@@ -1,0 +1,16 @@
+# Directories to ignore
+Document/
+.claude/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# Odoo
+*.pyc
+*.po~
