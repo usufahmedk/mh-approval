@@ -716,7 +716,7 @@ class MHBooking(models.Model):
         for record in self:
             record.price_total = record.price_subtotal + record.price_tax
 
-    @api.depends('task_id.invoice_count')
+    @api.depends('task_id')
     def _compute_invoice_count(self):
         """Compute the number of related invoices."""
         for record in self:
