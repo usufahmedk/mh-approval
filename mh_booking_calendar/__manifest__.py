@@ -21,6 +21,7 @@
         'sale_subscription', 'industry_fsm', 'appointment'
     ],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/sequence_data.xml',
         'data/mail_template_data.xml',

@@ -5,11 +5,10 @@
         <record id="cron_booking_reminder" model="ir.cron">
             <field name="name">MH Booking: Send Booking Reminders</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
             <field name="active">True</field>
         </record>
 
@@ -17,11 +16,10 @@
         <record id="cron_check_completion_time" model="ir.cron">
             <field name="name">MH Booking: Check Completion Time</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">30</field>
             <field name="interval_type">minutes</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
 
@@ -29,11 +27,10 @@
         <record id="cron_amc_booking_generation" model="ir.cron">
             <field name="name">MH Subscription: Auto-generate AMC Bookings</field>
             <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
 
@@ -41,11 +38,10 @@
         <record id="cron_check_overdue_amc" model="ir.cron">
             <field name="name">MH Subscription: Check Overdue AMC Visits</field>
             <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
 
@@ -53,11 +49,10 @@
         <record id="cron_subscription_renewal" model="ir.cron">
             <field name="name">MH Subscription: Check Renewal Due</field>
             <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">weeks</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
 
@@ -65,11 +60,10 @@
         <record id="cron_staff_leave_expiry" model="ir.cron">
             <field name="name">MH Staff: Update Leave Status</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_staff_leave"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
 
@@ -77,11 +71,10 @@
         <record id="cron_zone_capacity_check" model="ir.cron">
             <field name="name">MH Zone: Check Daily Capacity</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_zone"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">hours</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
 
@@ -89,11 +82,10 @@
         <record id="cron_calendar_sync" model="ir.cron">
             <field name="name">MH Booking: Sync with Google Calendar</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
 
@@ -101,11 +93,10 @@
         <record id="cron_whatsapp_process" model="ir.cron">
             <field name="name">MH Booking: Process WhatsApp Notifications</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="user_id" ref="base.user_root"/>
+            <field name="state">code</field>
             <field name="code">model.search([])</field>
             <field name="interval_number">5</field>
             <field name="interval_type">minutes</field>
-            <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
     </data>
