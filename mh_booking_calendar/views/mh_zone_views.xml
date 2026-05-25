@@ -121,9 +121,6 @@
                     <separator/>
                     <filter string="Active" name="active" domain="[('active', '=', True)]"/>
                     <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
-                    <separator/>
-                    <filter string="Manager" name="manager_id" group="1"/>
-                    <filter string="City" name="city" group="1"/>
                 </search>
             </field>
         </record>
