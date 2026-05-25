@@ -134,7 +134,7 @@
                                 <div class="o_kanban_card_body">
                                     <field name="team_lead_id"/>
                                     <br/>
-                                    <field name="is_on_route" widget="boolean"/>
+                                    <field name="is_on_route"/>
                                     <br/>
                                     <field name="today_booking_count"/> bookings today
                                 </div>

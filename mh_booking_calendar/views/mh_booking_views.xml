@@ -67,7 +67,7 @@
                                     <group string="Customer Info">
                                         <field name="partner_id"/>
                                         <field name="contact_id" domain="[('parent_id', '=', partner_id)]"/>
-                                        <field name="client_source" widget="selection"/>
+                                        <field name="client_source"/>
                                         <field name="site_address"/>
                                         <field name="gps_coordinates"/>
                                         <field name="maps_link" widget="url" readonly="1"/>
@@ -171,7 +171,7 @@
                                     </group>
                                     <group string="Customer Feedback">
                                         <field name="customer_feedback"/>
-                                        <field name="customer_rating" widget="priority"/>
+                                        <field name="customer_rating"/>
                                     </group>
                                 </group>
                                 <group string="Checklist">
