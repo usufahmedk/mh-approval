@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- MH Zone Tree View -->
+        <record id="view_mh_zone_tree" model="ir.ui.view">
+            <field name="name">mh.zone.tree</field>
+            <field name="model">mh.zone</field>
+            <field name="arch" type="xml">
+                <tree string="Zones"
+                    decoration-success="active"
+                    decoration-muted="not active"
+                    multi_edit="1">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="color" widget="color_picker"/>
+                    <field name="city"/>
+                    <field name="staff_count"/>
+                    <field name="capacity_per_day"/>
+                    <field name="booking_count_today"/>
+                    <field name="manager_id"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- MH Zone Form View -->
+        <record id="view_mh_zone_form" model="ir.ui.view">
+            <field name="name">mh.zone.form</field>
+            <field name="model">mh.zone</field>
+            <field name="arch" type="xml">
+                <form string="Zone">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <h3>
+                                <field name="code"/>
+                            </h3>
+                        </div>
+                        <group>
+                            <group string="Basic Info">
+                                <field name="active"/>
+                                <field name="color" widget="color_picker"/>
+                                <field name="parent_id" domain="[('id', '!=', id)]"/>
+                            </group>
+                            <group string="Management">
+                                <field name="manager_id"/>
+                                <field name="team_id"/>
+                            </group>
+                        </group>
+                        <group string="Address">
+                            <group>
+                                <field name="street"/>
+                                <field name="street2"/>
+                                <field name="city"/>
+                            </group>
+                            <group>
+                                <field name="state_id"/>
+                                <field name="zip"/>
+                                <field name="country_id"/>
+                            </group>
+                        </group>
+                        <group string="Capacity &amp; Buffer">
+                            <group>
+                                <field name="capacity_per_day"/>
+                                <field name="max_daily_bookings"/>
+                            </group>
+                            <group>
+                                <field name="default_buffer_minutes"/>
+                                <field name="cross_zone_buffer_minutes"/>
+                            </group>
+                        </group>
+                        <group string="Working Schedule">
+                            <group>
+                                <field name="working_hour_start"/>
+                                <field name="working_hour_end"/>
+                            </group>
+                            <group>
+                                <field name="working_days"/>
+                                <field name="booking_buffer_minutes"/>
+                            </group>
+                        </group>
+                        <group string="Current Utilization">
+                            <label for="booking_count_today" string="Today's Bookings"/>
+                            <div class="o_row">
+                                <field name="booking_count_today"/>
+                                <span>/</span>
+                                <field name="capacity_per_day"/>
+                            </div>
+                        </group>
+                        <group string="Staff Assignment">
+                            <field name="staff_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="phone"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Zone Search View -->
+        <record id="view_mh_zone_search" model="ir.ui.view">
+            <field name="name">mh.zone.search</field>
+            <field name="model">mh.zone</field>
+            <field name="arch" type="xml">
+                <search string="Search Zones">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="city"/>
+                    <field name="manager_id"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <filter string="Manager" name="manager_id" group="1"/>
+                    <filter string="City" name="city" group="1"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- MH Zone Kanban View -->
+        <record id="view_mh_zone_kanban" model="ir.ui.view">
+            <field name="name">mh.zone.kanban</field>
+            <field name="model">mh.zone</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_card_clickable">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <field name="name"/>
+                                    </div>
+                                    <div class="o_kanban_card_header_title">
+                                        <field name="code"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_body">
+                                    <field name="city"/>
+                                    <br/>
+                                    <field name="booking_count_today"/> bookings today
+                                    <br/>
+                                    <field name="capacity_per_day"/> capacity
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- MH Zone Action -->
+        <record id="action_mh_zone" model="ir.actions.act_window">
+            <field name="name">Zones</field>
+            <field name="res_model">mh.zone</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Zone
+                </p>
+                <p>Zones represent geographic service areas for booking assignments.</p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_zone"
+            name="Zones"
+            action="action_mh_zone"
+            parent="menu_mh_booking_root"
+            sequence="15"/>
+
+        <!-- MH Zone Coverage Tree View -->
+        <record id="view_mh_zone_coverage_tree" model="ir.ui.view">
+            <field name="name">mh.zone.coverage.tree</field>
+            <field name="model">mh.zone.coverage</field>
+            <field name="arch" type="xml">
+                <list string="Coverage Areas"
+                    decoration-success="active"
+                    decoration-muted="not active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="zone_id"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- MH Zone Coverage Form View -->
+        <record id="view_mh_zone_coverage_form" model="ir.ui.view">
+            <field name="name">mh.zone.coverage.form</field>
+            <field name="model">mh.zone.coverage</field>
+            <field name="arch" type="xml">
+                <form string="Coverage Area">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="zone_id"/>
+                            </group>
+                        </group>
+                        <group string="Description">
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Zone Coverage Action -->
+        <record id="action_mh_zone_coverage" model="ir.actions.act_window">
+            <field name="name">Coverage Areas</field>
+            <field name="res_model">mh.zone.coverage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_zone_coverage"
+            name="Coverage Areas"
+            action="action_mh_zone_coverage"
+            parent="menu_mh_zone"
+            sequence="10"/>
+    </data>
+</odoo>

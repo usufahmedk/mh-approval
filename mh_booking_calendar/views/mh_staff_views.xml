@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- MH Staff Tree View -->
+        <record id="view_mh_staff_tree" model="ir.ui.view">
+            <field name="name">mh.staff.tree</field>
+            <field name="model">mh.staff</field>
+            <field name="arch" type="xml">
+                <tree string="Staff Members"
+                    decoration-success="active"
+                    decoration-muted="not active"
+                    multi_edit="1">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="staff_type"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="zone_ids" widget="many2many_tags"/>
+                    <field name="is_team_lead"/>
+                    <field name="booking_count_today"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- MH Staff Form View -->
+        <record id="view_mh_staff_form" model="ir.ui.view">
+            <field name="name">mh.staff.form</field>
+            <field name="model">mh.staff</field>
+            <field name="arch" type="xml">
+                <form string="Staff Member">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Basic Info">
+                                <field name="partner_id"/>
+                                <field name="staff_type"/>
+                                <field name="active"/>
+                            </group>
+                            <group string="User Account">
+                                <field name="user_id"/>
+                                <field name="is_team_lead"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Contact Information">
+                                <field name="phone"/>
+                                <field name="mobile"/>
+                                <field name="email"/>
+                            </group>
+                            <group string="Work Details">
+                                <field name="job_title"/>
+                                <field name="department_id"/>
+                                <field name="team_id"/>
+                                <field name="vehicle_id"/>
+                            </group>
+                        </group>
+                        <group string="Zone Assignment">
+                            <field name="zone_ids" widget="many2many_tags"/>
+                            <field name="primary_zone_id"/>
+                        </group>
+                        <group string="Certifications &amp; Skills">
+                            <group>
+                                <field name="certification_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <field name="skill_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Capacity">
+                                <field name="max_daily_bookings"/>
+                                <field name="max_weekly_bookings"/>
+                            </group>
+                            <group string="Working Schedule">
+                                <field name="working_days"/>
+                                <field name="working_hour_start"/>
+                                <field name="working_hour_end"/>
+                            </group>
+                        </group>
+                        <group string="Leave Management">
+                            <field name="leave_ids" nolabel="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="leave_type_id"/>
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </group>
+                        <group string="Statistics">
+                            <group>
+                                <field name="booking_count_today" readonly="1"/>
+                                <field name="booking_count_week" readonly="1"/>
+                                <field name="booking_count_month" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="completion_rate" readonly="1"/>
+                                <field name="avg_customer_rating" readonly="1"/>
+                                <field name="total_hours_worked" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Staff Search View -->
+        <record id="view_mh_staff_search" model="ir.ui.view">
+            <field name="name">mh.staff.search</field>
+            <field name="model">mh.staff</field>
+            <field name="arch" type="xml">
+                <search string="Search Staff">
+                    <field name="name"/>
+                    <field name="phone"/>
+                    <field name="mobile"/>
+                    <field name="email"/>
+                    <field name="staff_type"/>
+                    <field name="primary_zone_id"/>
+                    <field name="zone_ids"/>
+                    <field name="team_id"/>
+                    <field name="user_id"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="Team Leads" name="team_leads" domain="[('is_team_lead', '=', True)]"/>
+                    <separator/>
+                    <filter string="Cleaners" name="cleaners" domain="[('staff_type', '=', 'cleaner')]"/>
+                    <filter string="Technicians" name="technicians" domain="[('staff_type', '=', 'technician')]"/>
+                    <filter string="Drivers" name="drivers" domain="[('staff_type', '=', 'driver')]"/>
+                    <separator/>
+                    <group expand="0" string="Group By" name="group_by">
+                        <filter string="Zone" name="zone_id" context="{'group_by': 'primary_zone_id'}"/>
+                        <filter string="Staff Type" name="staff_type" context="{'group_by': 'staff_type'}"/>
+                        <filter string="Team" name="team_id" context="{'group_by': 'team_id'}"/>
+                        <filter string="Active" name="group_active" context="{'group_by': 'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- MH Staff Kanban View -->
+        <record id="view_mh_staff_kanban" model="ir.ui.view">
+            <field name="name">mh.staff.kanban</field>
+            <field name="model">mh.staff</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_card_clickable">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <field name="name"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_body">
+                                    <field name="staff_type"/>
+                                    <br/>
+                                    <field name="phone"/>
+                                    <br/>
+                                    <field name="primary_zone_id"/>
+                                    <br/>
+                                    <field name="booking_count_today"/> bookings today
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- MH Staff Action -->
+        <record id="action_mh_staff" model="ir.actions.act_window">
+            <field name="name">Staff Members</field>
+            <field name="res_model">mh.staff</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Staff Member
+                </p>
+                <p>Staff members are assigned to bookings to perform services.</p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_staff"
+            name="Staff"
+            action="action_mh_staff"
+            parent="menu_mh_booking_root"
+            sequence="30"/>
+
+        <!-- MH Staff Certification Tree View -->
+        <record id="view_mh_staff_certification_tree" model="ir.ui.view">
+            <field name="name">mh.staff.certification.tree</field>
+            <field name="model">mh.staff.certification</field>
+            <field name="arch" type="xml">
+                <tree string="Certifications"
+                    decoration-success="active"
+                    decoration-muted="not active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="validity_months"/>
+                    <field name="staff_count"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- MH Staff Certification Form View -->
+        <record id="view_mh_staff_certification_form" model="ir.ui.view">
+            <field name="name">mh.staff.certification.form</field>
+            <field name="model">mh.staff.certification</field>
+            <field name="arch" type="xml">
+                <form string="Certification">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="validity_months"/>
+                                <field name="issuing_body"/>
+                            </group>
+                        </group>
+                        <group string="Description">
+                            <field name="description"/>
+                        </group>
+                        <group string="Required For">
+                            <field name="booking_type_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Staff Certification Action -->
+        <record id="action_mh_staff_certification" model="ir.actions.act_window">
+            <field name="name">Certifications</field>
+            <field name="res_model">mh.staff.certification</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_staff_certification"
+            name="Certifications"
+            action="action_mh_staff_certification"
+            parent="menu_mh_staff"
+            sequence="10"/>
+
+        <!-- MH Staff Skill Tree View -->
+        <record id="view_mh_staff_skill_tree" model="ir.ui.view">
+            <field name="name">mh.staff.skill.tree</field>
+            <field name="model">mh.staff.skill</field>
+            <field name="arch" type="xml">
+                <tree string="Skills"
+                    decoration-success="active"
+                    decoration-muted="not active">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category_id"/>
+                    <field name="staff_count"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- MH Staff Skill Form View -->
+        <record id="view_mh_staff_skill_form" model="ir.ui.view">
+            <field name="name">mh.staff.skill.form</field>
+            <field name="model">mh.staff.skill</field>
+            <field name="arch" type="xml">
+                <form string="Skill">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="category_id"/>
+                            </group>
+                        </group>
+                        <group string="Description">
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Staff Skill Action -->
+        <record id="action_mh_staff_skill" model="ir.actions.act_window">
+            <field name="name">Skills</field>
+            <field name="res_model">mh.staff.skill</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_staff_skill"
+            name="Skills"
+            action="action_mh_staff_skill"
+            parent="menu_mh_staff"
+            sequence="20"/>
+
+        <!-- MH Staff Leave Tree View -->
+        <record id="view_mh_staff_leave_tree" model="ir.ui.view">
+            <field name="name">mh.staff.leave.tree</field>
+            <field name="model">mh.staff.leave</field>
+            <field name="arch" type="xml">
+                <tree string="Staff Leaves"
+                    decoration-warning="state == 'pending'"
+                    decoration-success="state == 'approved'"
+                    decoration-danger="state == 'rejected'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="staff_id"/>
+                    <field name="leave_type_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="duration_days"/>
+                    <field name="state" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- MH Staff Leave Form View -->
+        <record id="view_mh_staff_leave_form" model="ir.ui.view">
+            <field name="name">mh.staff.leave.form</field>
+            <field name="model">mh.staff.leave</field>
+            <field name="arch" type="xml">
+                <form string="Staff Leave">
+                    <header>
+                        <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'pending'"/>
+                        <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state != 'pending'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,approved,rejected"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="staff_id"/>
+                                <field name="leave_type_id"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="duration_days"/>
+                            </group>
+                        </group>
+                        <group string="Notes">
+                            <field name="reason"/>
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Staff Leave Action -->
+        <record id="action_mh_staff_leave" model="ir.actions.act_window">
+            <field name="name">Staff Leaves</field>
+            <field name="res_model">mh.staff.leave</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_staff_leave"
+            name="Leaves"
+            action="action_mh_staff_leave"
+            parent="menu_mh_staff"
+            sequence="30"/>
+    </data>
+</odoo>

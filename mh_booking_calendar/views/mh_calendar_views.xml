@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main MH Booking Calendar Menu -->
+        <menuitem id="menu_mh_booking_root"
+            name="MH Booking Calendar"
+            sequence="50"
+            web_icon="mh_booking_calendar,static/description/icon.png"/>
+
+        <!-- Dashboard Action -->
+        <record id="action_mh_booking_dashboard" model="ir.actions.act_window">
+            <field name="name">Booking Dashboard</field>
+            <field name="res_model">mh.booking</field>
+            <field name="view_mode">kanban</field>
+            <field name="context">{'search_default_booking_date': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Welcome to MH Booking Calendar
+                </p>
+                <p>Manage bookings, staff assignments, and scheduling for your cleaning and maintenance services.</p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_booking_dashboard"
+            name="Dashboard"
+            action="action_mh_booking_dashboard"
+            parent="menu_mh_booking_root"
+            sequence="1"/>
+
+        <!-- MH Slot Tree View -->
+        <record id="view_mh_slot_tree" model="ir.ui.view">
+            <field name="name">mh.slot.tree</field>
+            <field name="model">mh.slot</field>
+            <field name="arch" type="xml">
+                <list string="Time Slots">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="time_start"/>
+                    <field name="time_end"/>
+                    <field name="duration"/>
+                    <field name="slot_type"/>
+                    <field name="is_default"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- MH Slot Form View -->
+        <record id="view_mh_slot_form" model="ir.ui.view">
+            <field name="name">mh.slot.form</field>
+            <field name="model">mh.slot</field>
+            <field name="arch" type="xml">
+                <form string="Time Slot">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="time_start"/>
+                                <field name="time_end"/>
+                                <field name="duration"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="slot_type"/>
+                                <field name="is_default"/>
+                            </group>
+                            <group>
+                                <field name="max_bookings"/>
+                                <field name="allow_overflow"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="zone_id"/>
+                            </group>
+                            <group>
+                                <field name="booking_type_ids"/>
+                            </group>
+                        </group>
+                        <group string="Description">
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Slot Action -->
+        <record id="action_mh_slot" model="ir.actions.act_window">
+            <field name="name">Time Slots</field>
+            <field name="res_model">mh.slot</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_slot"
+            name="Time Slots"
+            action="action_mh_slot"
+            parent="menu_mh_booking_root"
+            sequence="25"/>
+
+        <!-- MH Resource Tree View -->
+        <record id="view_mh_resource_tree" model="ir.ui.view">
+            <field name="name">mh.resource.tree</field>
+            <field name="model">mh.resource</field>
+            <field name="arch" type="xml">
+                <list string="Resources">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="resource_type"/>
+                    <field name="quantity"/>
+                    <field name="quantity_available"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- MH Resource Form View -->
+        <record id="view_mh_resource_form" model="ir.ui.view">
+            <field name="name">mh.resource.form</field>
+            <field name="model">mh.resource</field>
+            <field name="arch" type="xml">
+                <form string="Resource">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="resource_type"/>
+                                <field name="product_id"/>
+                            </group>
+                        </group>
+                        <group string="Capacity">
+                            <group>
+                                <field name="quantity"/>
+                                <field name="quantity_available"/>
+                            </group>
+                            <group>
+                                <field name="duration_min"/>
+                                <field name="duration_max"/>
+                                <field name="buffer_time"/>
+                            </group>
+                        </group>
+                        <group string="Description">
+                            <field name="description"/>
+                        </group>
+                        <group string="Notes">
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH Resource Action -->
+        <record id="action_mh_resource" model="ir.actions.act_window">
+            <field name="name">Resources</field>
+            <field name="res_model">mh.resource</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_resource"
+            name="Resources"
+            action="action_mh_resource"
+            parent="menu_mh_booking_root"
+            sequence="40"/>
+
+        <!-- MH SLA Tree View -->
+        <record id="view_mh_sla_tree" model="ir.ui.view">
+            <field name="name">mh.sla.tree</field>
+            <field name="model">mh.sla</field>
+            <field name="arch" type="xml">
+                <list string="SLAs">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="response_time_hours"/>
+                    <field name="resolution_time_hours"/>
+                    <field name="availability_percent"/>
+                    <field name="subscription_count"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- MH SLA Form View -->
+        <record id="view_mh_sla_form" model="ir.ui.view">
+            <field name="name">mh.sla.form</field>
+            <field name="model">mh.sla</field>
+            <field name="arch" type="xml">
+                <form string="Service Level Agreement">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="response_time_hours"/>
+                                <field name="resolution_time_hours"/>
+                                <field name="availability_percent"/>
+                            </group>
+                        </group>
+                        <group string="Penalty">
+                            <field name="has_penalty"/>
+                            <field name="penalty_description"/>
+                        </group>
+                        <group string="Description">
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- MH SLA Action -->
+        <record id="action_mh_sla" model="ir.actions.act_window">
+            <field name="name">Service Level Agreements</field>
+            <field name="res_model">mh.sla</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_mh_sla"
+            name="SLAs"
+            action="action_mh_sla"
+            parent="menu_mh_booking_root"
+            sequence="45"/>
+    </data>
+</odoo>
