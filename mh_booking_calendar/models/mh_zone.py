@@ -173,13 +173,11 @@ class MHZone(models.Model):
     working_hour_start = fields.Float(
         string='Working Hours Start',
         default=8.0,
-        widget='float_time',
         help='Start time for bookings in this zone.',
     )
     working_hour_end = fields.Float(
         string='Working Hours End',
         default=18.0,
-        widget='float_time',
         help='End time for bookings in this zone.',
     )
     working_days = fields.Char(

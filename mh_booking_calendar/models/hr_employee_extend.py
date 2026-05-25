@@ -13,6 +13,12 @@ class HrEmployeeExtend(models.Model):
         ('supervisor', 'Supervisor'),
     ], string='Booking Role', index=True)
 
+    # Team Lead flag for driver team assignment
+    is_team_lead = fields.Boolean(
+        string='Is Team Lead',
+        default=False,
+    )
+
     # Zone Assignment for this employee
     zone_ids = fields.Many2many(
         'mh.zone',
@@ -46,10 +52,8 @@ class HrEmployeeExtend(models.Model):
     working_hour_start = fields.Float(
         string='Start Time',
         default=9.0,
-        widget='float_time',
     )
     working_hour_end = fields.Float(
         string='End Time',
         default=18.0,
-        widget='float_time',
     )
