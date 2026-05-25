@@ -325,11 +325,6 @@ class MHBooking(models.Model):
     # =====================================================================
     # COMPLETION & FOLLOW-UP
     # =====================================================================
-    completion_wizard_id = fields.Many2one(
-        'mh.booking.completion.wizard',
-        string='Completion Wizard',
-        copy=False,
-    )
     completion_date = fields.Datetime(
         string='Completion Date',
         readonly=True,
