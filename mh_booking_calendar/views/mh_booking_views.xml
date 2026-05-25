@@ -198,7 +198,7 @@
                                         <field name="conflict_message"/>
                                         <field name="conflict_line_ids" readonly="1" nolabel="1">
                                             <list string="Conflicts">
-                                                <field name="staff_id"/>
+                                                <field name="employee_id"/>
                                                 <field name="conflict_type"/>
                                                 <field name="name"/>
                                             </list>
