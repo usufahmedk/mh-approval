@@ -85,15 +85,8 @@ class MHBooking(models.Model):
     )
 
     # =====================================================================
-    # BOOKING TYPE & SERVICE DETAILS
+    # SERVICE DETAILS
     # =====================================================================
-    booking_type_id = fields.Many2one(
-        'mh.booking.type',
-        string='Booking Type',
-        required=True,
-        tracking=True,
-        ondelete='restrict',
-    )
     description = fields.Text(
         string='Service Description',
         translate=True,
@@ -158,21 +151,16 @@ class MHBooking(models.Model):
         default=False,
     )
 
-    # Time slot tracking
-    slot_id = fields.Many2one(
-        'mh.slot',
-        string='Time Slot',
-        ondelete='set null',
-    )
+    # Time slot tracking - removed, using direct datetime instead
 
     # =====================================================================
     # STAFF ASSIGNMENT
     # =====================================================================
     staff_ids = fields.Many2many(
-        'mh.staff',
-        'mh_booking_staff_rel',
+        'hr.employee',
+        'mh_booking_employee_rel',
         'booking_id',
-        'staff_id',
+        'employee_id',
         string='Assigned Staff',
         domain="[('zone_ids', 'in', zone_id), ('active', '=', True)]",
         tracking=True,
@@ -183,7 +171,7 @@ class MHBooking(models.Model):
         store=True,
     )
     team_lead_id = fields.Many2one(
-        'mh.staff',
+        'hr.employee',
         string='Team Lead',
         domain="[('id', 'in', staff_ids)]",
         ondelete='set null',
@@ -214,30 +202,40 @@ class MHBooking(models.Model):
     )
 
     # In Odoo 18, subscriptions are sale.order records with is_subscription=True
-    subscription_id = fields.Many2one(
-        'sale.order',
-        string='AMC/Subscription Order',
-        ondelete='set null',
-        index=True,
-        tracking=True,
-        domain=[('is_subscription', '=', True)],
-    )
     is_amc_booking = fields.Boolean(
         string='AMC Booking',
         compute='_compute_is_amc_booking',
         store=True,
     )
 
-    sale_order_id = fields.Many2one(
-        'sale.order',
-        string='Sales Order',
-        ondelete='set null',
+    # =====================================================================
+    # SALE ORDER LINE INTEGRATION
+    # =====================================================================
+    sale_line_id = fields.Many2one(
+        'sale.order.line',
+        string='Sales Order Line',
+        ondelete='cascade',
         index=True,
         tracking=True,
     )
+    sale_order_id = fields.Many2one(
+        'sale.order',
+        string='Sales Order',
+        related='sale_line_id.order_id',
+        store=True,
+        index=True,
+    )
+    product_id = fields.Many2one(
+        'product.product',
+        string='Service Product',
+        related='sale_line_id.product_id',
+        store=True,
+    )
+
+    # Legacy field - kept for backward compatibility but deprecated
     sale_order_line_id = fields.Many2one(
         'sale.order.line',
-        string='Order Line',
+        string='Order Line (Deprecated)',
         ondelete='set null',
     )
     is_one_time_booking = fields.Boolean(
@@ -663,17 +661,17 @@ class MHBooking(models.Model):
         for record in self:
             record.staff_count = len(record.staff_ids)
 
-    @api.depends('subscription_id')
+    @api.depends('sale_order_id')
     def _compute_is_amc_booking(self):
         """Determine if this is an AMC (Annual Maintenance Contract) booking."""
         for record in self:
-            record.is_amc_booking = bool(record.subscription_id)
+            record.is_amc_booking = bool(record.sale_order_id and record.sale_order_id.is_subscription)
 
     @api.depends('sale_order_id')
     def _compute_is_one_time_booking(self):
         """Determine if this is a one-time booking."""
         for record in self:
-            record.is_one_time_booking = bool(record.sale_order_id) and not record.subscription_id
+            record.is_one_time_booking = bool(record.sale_order_id) and not record.sale_order_id.is_subscription
 
     @api.depends('conflict_line_ids')
     def _compute_has_conflicts(self):
@@ -705,7 +703,7 @@ class MHBooking(models.Model):
                 record.price_subtotal,
                 currency=record.currency_id,
                 quantity=1.0,
-                product=record.booking_type_id.product_id,
+                product=record.product_id,
                 partner=record.partner_id,
             )
             record.price_tax = sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
@@ -759,12 +757,12 @@ class MHBooking(models.Model):
         for record in self:
             record.material_required = record.material_flag
 
-    @api.depends('booking_type_id.is_commercial')
+    @api.depends('product_id')
     def _compute_is_commercial(self):
-        """Determine if booking is commercial based on booking type."""
+        """Determine if booking is commercial based on product."""
         for record in self:
-            if record.booking_type_id:
-                record.is_commercial = record.booking_type_id.is_commercial
+            if record.product_id:
+                record.is_commercial = getattr(record.product_id, 'is_commercial', False)
             else:
                 record.is_commercial = False
 
@@ -840,27 +838,27 @@ class MHBooking(models.Model):
             # Remove existing conflicts
             record.conflict_line_ids.unlink()
 
-            for staff in record.staff_ids:
+            for employee in record.staff_ids:
                 # Check time conflicts
-                time_conflicts = record._search_time_conflicts(staff)
+                time_conflicts = record._search_time_conflicts(employee)
                 for conflict in time_conflicts:
                     self.env['mh.booking.conflict'].create({
                         'booking_id': record.id,
-                        'staff_id': staff.id,
+                        'employee_id': employee.id,
                         'conflict_booking_id': conflict.id,
                         'conflict_type': 'time',
                         'name': f'Time conflict with {conflict.name} ({conflict.booking_date_start} - {conflict.booking_date_end})',
                     })
 
                 # Check zone conflicts (staff assigned to multiple zones at same time)
-                zone_conflicts = record._search_zone_conflicts(staff)
+                zone_conflicts = record._search_zone_conflicts(employee)
                 for conflict in zone_conflicts:
                     self.env['mh.booking.conflict'].create({
                         'booking_id': record.id,
-                        'staff_id': staff.id,
+                        'employee_id': employee.id,
                         'conflict_booking_id': conflict.id,
                         'conflict_type': 'zone',
-                        'name': f'Zone conflict: {staff.name} already assigned to zone {conflict.zone_id.name} at this time',
+                        'name': f'Zone conflict: {employee.name} already assigned to zone {conflict.zone_id.name} at this time',
                     })
 
             # Check driver conflicts if driver is assigned
@@ -993,7 +991,7 @@ class MHBooking(models.Model):
             return self.calendar_event_id
 
         event_vals = {
-            'name': f'{self.name} - {self.booking_type_id.name}',
+            'name': f'{self.name} - {self.product_id.name or "Booking"}',
             'start': self.booking_date_start,
             'stop': self.booking_date_end,
             'allday': self.all_day,
@@ -1174,7 +1172,7 @@ class MHBooking(models.Model):
         base_data = {
             'booking_ref': self.name,
             'customer_name': self.partner_id.name or '',
-            'service_type': self.booking_type_id.name or '',
+            'service_type': self.product_id.name or '',
             'date': fields.Date.format(self.booking_date),
             'time': fields.Datetime.format(self.booking_date_start),
             'address': self.site_address or self.delivery_address or '',
@@ -1308,59 +1306,124 @@ class MHBooking(models.Model):
         return self.action_send_whatsapp(message_type='en_route')
 
     # =====================================================================
+    # AUTO-ASSIGNMENT METHODS
+    # =====================================================================
+    def _auto_assign_staff(self):
+        """Auto-assign staff based on zone and availability."""
+        self.ensure_one()
+        if self.staff_ids:
+            return  # Already has staff assigned
+
+        # Determine required role based on product
+        required_role = self._get_required_booking_role()
+
+        # Find available employees in the zone
+        domain = [
+            ('zone_ids', 'in', self.zone_id.id),
+            ('active', '=', True),
+        ]
+        if required_role:
+            domain.append(('booking_role', '=', required_role))
+
+        available_employees = self.env['hr.employee'].search(domain)
+
+        # Filter by availability (no conflicts)
+        for emp in available_employees:
+            if self._is_employee_available(emp):
+                self.staff_ids = [(4, emp.id)]
+                break  # Assign one staff member initially
+
+    def _get_required_booking_role(self):
+        """Determine the booking role required for this booking based on product."""
+        self.ensure_one()
+        if self.product_id:
+            # Can be extended to check product categories
+            return 'cleaner'  # Default role
+        return False
+
+    def _is_employee_available(self, employee):
+        """Check if employee is available for this booking's time."""
+        if not self.booking_date_start or not self.booking_date_end:
+            return True
+
+        # Check for booking conflicts
+        conflicts = self.env['mh.booking'].search([
+            ('staff_ids', 'in', employee.id),
+            ('id', '!=', self.id),
+            ('booking_date_start', '<', self.booking_date_end),
+            ('booking_date_end', '>', self.booking_date_start),
+            ('state', 'not in', ['cancelled', 'completed', 'no_show']),
+        ])
+        return len(conflicts) == 0
+
+    @api.model
+    def create_booking_from_sale_line(self, sale_line):
+        """Create a booking from a sale order line."""
+        order = sale_line.order_id
+        vals = {
+            'name': 'New',
+            'partner_id': order.partner_id.id,
+            'sale_line_id': sale_line.id,
+            'booking_date_start': sale_line.date_end or fields.Datetime.now(),
+            'booking_date_end': sale_line.date_end and sale_line.date_end + timedelta(hours=2),
+        }
+        booking = self.create(vals)
+        booking._auto_assign_staff()
+        return booking
+
+    # =====================================================================
     # HELPER METHODS
     # =====================================================================
     def get_available_staff(self):
         """Get list of available staff for this booking's zone and time."""
         self.ensure_one()
-        staff_pool = self.env['mh.staff']
+        employee_pool = self.env['hr.employee']
 
-        # Get all staff assigned to this zone
-        zone_staff = staff_pool.search([
+        # Get all employees assigned to this zone
+        zone_employees = employee_pool.search([
             ('zone_ids', 'in', self.zone_id.id),
             ('active', '=', True),
         ])
 
         # Filter out those with conflicts
-        available = staff_pool
-        for staff in zone_staff:
-            if not self._search_time_conflicts(staff):
-                available |= staff
+        available = employee_pool
+        for employee in zone_employees:
+            if not self._search_time_conflicts(employee):
+                available |= employee
 
         return available
 
     def get_checklist_template(self):
-        """Get checklist items based on booking type."""
+        """Get checklist items based on product."""
         self.ensure_one()
-        if not self.booking_type_id:
+        if not self.product_id:
             return []
 
-        # Create checklist based on booking type properties
+        # Create checklist based on product properties
         checklist_items = []
-        for prop in self.booking_type_id.property_ids:
-            checklist_items.append({
-                'name': prop.name,
-                'booking_id': self.id,
-            })
+        if hasattr(self.product_id, 'checklist_item_ids'):
+            for item in self.product_id.checklist_item_ids:
+                checklist_items.append({
+                    'name': item.name,
+                    'booking_id': self.id,
+                })
 
         return checklist_items
 
-    @api.onchange('booking_type_id')
-    def _onchange_booking_type_id(self):
-        """Update default values when booking type changes."""
-        if self.booking_type_id:
-            self.list_price = self.booking_type_id.price
-            self.duration = self.booking_type_id.duration
-            self.tax_ids = self.booking_type_id.product_id.taxes_id
+    @api.onchange('sale_line_id')
+    def _onchange_sale_line_id(self):
+        """Update default values when sale line changes."""
+        if self.sale_line_id:
+            self.list_price = self.sale_line_id.price_unit
+            self.product_id = self.sale_line_id.product_id
 
-            # Create checklist items
-            checklist_vals = []
-            for prop in self.booking_type_id.property_ids:
-                checklist_vals.append((0, 0, {
-                    'name': prop.name,
-                }))
-            if checklist_vals:
-                self.checklist_line_ids = checklist_vals
+            # Get duration from product if configured
+            if self.sale_line_id.product_id:
+                product = self.sale_line_id.product_id
+                # Check if product has duration field
+                if hasattr(product, 'duration') and product.duration:
+                    self.duration = product.duration
+                self.tax_ids = product.taxes_id
 
     @api.onchange('zone_id')
     def _onchange_zone_id(self):
@@ -1490,8 +1553,8 @@ class MHBookingConflict(models.Model):
         required=True,
         ondelete='cascade',
     )
-    staff_id = fields.Many2one(
-        'mh.staff',
+    employee_id = fields.Many2one(
+        'hr.employee',
         string='Staff Member',
         required=True,
         ondelete='cascade',
@@ -1601,7 +1664,7 @@ class MHBookingChecklist(models.Model):
         default=10,
     )
     staff_id = fields.Many2one(
-        'mh.staff',
+        'hr.employee',
         string='Completed By',
         ondelete='set null',
     )
@@ -1614,7 +1677,7 @@ class MHBookingChecklist(models.Model):
         """Record completion details when checked."""
         if self.is_done and not self.completed_date:
             self.completed_date = fields.Datetime.now()
-            self.staff_id = self.env['mh.staff'].search([
+            self.staff_id = self.env['hr.employee'].search([
                 ('user_id', '=', self.env.uid)
             ], limit=1)
         elif not self.is_done:

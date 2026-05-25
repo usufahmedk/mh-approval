@@ -15,7 +15,8 @@
                     <field name="name" readonly="1"/>
                     <field name="booking_date_start"/>
                     <field name="partner_id"/>
-                    <field name="booking_type_id"/>
+                    <field name="sale_order_id"/>
+                    <field name="product_id" optional="show"/>
                     <field name="zone_id"/>
                     <field name="staff_ids" widget="many2many_tags"/>
                     <field name="job_status" widget="badge"
@@ -73,7 +74,11 @@
                                         <field name="maps_link" widget="url" readonly="1"/>
                                     </group>
                                     <group string="Service Details">
-                                        <field name="booking_type_id"/>
+                                        <group string="Sales Order">
+                                            <field name="sale_order_id" readonly="1"/>
+                                            <field name="sale_line_id" readonly="1" domain="[('order_id', '=', sale_order_id)]"/>
+                                            <field name="product_id" readonly="1"/>
+                                        </group>
                                         <field name="service_subcategory"/>
                                         <field name="zone_id"/>
                                         <field name="booking_date"/>
@@ -238,7 +243,6 @@
                 <search string="Search Bookings">
                     <field name="name"/>
                     <field name="partner_id"/>
-                    <field name="booking_type_id"/>
                     <field name="zone_id"/>
                     <field name="staff_ids"/>
                     <field name="subscription_id"/>
@@ -263,7 +267,7 @@
                     <separator/>
                     <group expand="0" string="Group By" name="group_by">
                         <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"/>
-                        <filter string="Booking Type" name="booking_type_id" context="{'group_by': 'booking_type_id'}"/>
+                        <filter string="Product" name="product_id" context="{'group_by': 'product_id'}"/>
                         <filter string="State" name="state" context="{'group_by': 'state'}"/>
                     </group>
                 </search>
@@ -277,7 +281,7 @@
             <field name="arch" type="xml">
                 <pivot string="Booking Analysis" sample="1">
                     <field name="booking_date" type="col" string="Date"/>
-                    <field name="booking_type_id" type="row"/>
+                    <field name="product_id" type="row"/>
                     <field name="price_total" type="measure"/>
                     <field name="duration" type="measure"/>
                     <field name="staff_count" type="measure"/>
@@ -317,7 +321,7 @@
                                 <div class="o_kanban_card_body">
                                     <field name="booking_date_start"/>
                                     <br/>
-                                    <field name="booking_type_id"/>
+                                    <field name="product_id"/>
                                     <br/>
                                     <field name="partner_id"/>
                                 </div>

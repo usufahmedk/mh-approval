@@ -28,27 +28,26 @@ class SaleOrder(models.Model):
         index=True,
     )
 
-    mh_booking_type_id = fields.Many2one(
-        'mh.booking.type',
-        string='Booking Type',
-        index=True,
-    )
-
-    mh_staff_ids = fields.Many2many(
-        'mh.staff',
-        'sale_order_staff_rel',
-        'order_id',
-        'staff_id',
-        string='Assigned Staff',
-        help='Fixed staff assigned to this AMC contract'
-    )
-
     mh_booking_ids = fields.One2many(
         'mh.booking',
         'sale_order_id',
         string='AMC Bookings',
         readonly=True,
         copy=False
+    )
+
+    # Service configuration (using product)
+    default_booking_role = fields.Selection([
+        ('cleaner', 'Cleaner'),
+        ('technician', 'Technician'),
+        ('driver', 'Driver'),
+    ], string='Default Booking Role',
+       help='Default role for staff assigned to bookings from this contract')
+
+    default_service_duration = fields.Float(
+        string='Default Duration (Hours)',
+        default=2.0,
+        help='Default service duration for bookings from this contract',
     )
 
     # AMC Contract Details
@@ -158,32 +157,35 @@ class SaleOrder(models.Model):
 
         return self._create_amc_booking()
 
-    def _create_amc_booking(self):
+    def _create_amc_booking(self, sale_line=False):
         """Create a booking from this AMC contract"""
         self.ensure_one()
 
-        if not self.mh_booking_type_id or not self.mh_zone_id:
-            raise UserError(_('AMC contract must have booking type and zone defined.'))
+        if not self.mh_zone_id:
+            raise UserError(_('AMC contract must have zone defined.'))
 
-        booking = self.env['mh.booking'].create({
+        # Create booking with basic info - user will assign staff
+        vals = {
             'partner_id': self.partner_id.id,
-            'booking_type_id': self.mh_booking_type_id.id,
             'zone_id': self.mh_zone_id.id,
-            'staff_ids': [(6, 0, self.mh_staff_ids.ids)] if self.mh_staff_ids else [(5,)],
             'sale_order_id': self.id,
             'is_amc_booking': True,
             'booking_date': fields.Date.today(),
             'booking_date_start': fields.Datetime.now(),
-            'booking_date_end': fields.Datetime.now() + timedelta(hours=2),
+            'booking_date_end': fields.Datetime.now() + timedelta(hours=self.default_service_duration or 2.0),
             'client_source': self.client_source or 'referral',
-        })
-
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'mh.booking',
-            'res_id': booking.id,
-            'view_mode': 'form',
         }
+
+        # If sale line provided, link it
+        if sale_line:
+            vals['sale_line_id'] = sale_line.id
+
+        booking = self.env['mh.booking'].create(vals)
+
+        # Auto-assign staff based on zone
+        booking._auto_assign_staff()
+
+        return booking
 
     def action_view_amc_bookings(self):
         """View all AMC bookings"""
@@ -201,6 +203,36 @@ class SaleOrder(models.Model):
         """Set defaults when AMC is enabled"""
         if self.is_amc_contract:
             self.is_subscription = True
+
+    def action_confirm(self):
+        """Override to create bookings from service lines on confirm."""
+        result = super().action_confirm()
+
+        for order in self:
+            # Create booking for each service product line
+            for line in order.order_line:
+                if line.product_id.type == 'service' and line.product_uom_qty > 0:
+                    # Create booking for this line
+                    booking = self.env['mh.booking'].create({
+                        'name': 'New',
+                        'partner_id': order.partner_id.id,
+                        'sale_line_id': line.id,
+                        'sale_order_id': order.id,
+                        'zone_id': order.mh_zone_id.id if order.mh_zone_id else False,
+                        'booking_date': line.date_end.date() if line.date_end else fields.Date.today(),
+                        'booking_date_start': line.date_end or fields.Datetime.now(),
+                        'booking_date_end': line.date_end + timedelta(hours=order.default_service_duration or 2.0) if line.date_end else False,
+                        'is_amc_booking': order.is_subscription,
+                        'client_source': order.client_source or 'other',
+                    })
+
+                    # Auto-assign staff
+                    booking._auto_assign_staff()
+
+                    # Link line to booking
+                    line.mh_booking_id = booking.id
+
+        return result
 
 
 class MhPauseAmcWizard(models.TransientModel):
