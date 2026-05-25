@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.idea/
+.vscode/
+*.egg-info/
+MH_Services_Odoo_BRD_v1.0.pdf
+Odoo Addons/
+Odoo Addons.zip
+.git/

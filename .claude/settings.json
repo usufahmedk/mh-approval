@@ -1,0 +1,50 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash:git add",
+      "Bash:git commit",
+      "Bash:git push",
+      "Bash:git pull",
+      "Bash:git branch",
+      "Bash:git checkout",
+      "Bash:git clone",
+      "Bash:git remote",
+      "Bash:git init",
+      "Bash:ssh odoodb@*",
+      "Bash:python -c *",
+      "Bash:python */odoo_client.py *",
+      "Bash:pip install *",
+      "Bash:curl *",
+      "Glob:**/*.py",
+      "Glob:**/*.xml",
+      "Glob:**/*.csv",
+      "Grep:*",
+      "Read:**/*"
+    ],
+    "deny": [
+      "Bash:git push --force",
+      "Bash:git reset --hard",
+      "Bash:* drop table*",
+      "Bash:* truncate*",
+      "Bash:* rm -rf *"
+    ]
+  },
+  "env": {
+    "ODOO_MODULE_PATH": "C:\\Projects\\M&H\\approvals\\mh_approval_extension",
+    "DYNAMIC_APPROVAL_PATH": "C:\\Projects\\M&H\\approvals\\dynamic_approval_workflow",
+    "ODOO_ADDONS_PATH": "C:\\Projects\\M&H\\approvals"
+  },
+  "goals": {
+    "approval_workflow": {
+      "description": "Development and maintenance of mh_approval_extension",
+      "primary_model": "purchase.order",
+      "related_models": [
+        "account.move",
+        "hr.expense",
+        "account.payment",
+        "approval.request",
+        "approval.workflow.config"
+      ]
+    }
+  }
+}
