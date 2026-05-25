@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form view for appointment type -->
+        <record id="appointment_type_view_form_inherit" model="ir.ui.view">
+            <field name="name">appointment.type.form.enhanced</field>
+            <field name="model">appointment.type</field>
+            <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='right_details']" position="inside">
+                    <!-- Enhanced booking type selection -->
+                    <field name="booking_type"/>
+                    
+                    <!-- Multi-Member booking options -->
+                    <field name="required_users_count" 
+                           invisible="booking_type != 'team_booking'" 
+                           required="booking_type == 'team_booking'"/>
+                    
+                    <!-- Team booking options -->
+                    <field name="team_ids" widget="many2many_tags" 
+                           invisible="booking_type != 'multi_team_booking'" 
+                           required="booking_type == 'multi_team_booking'"/>
+                    
+                    <!-- Custom slot generation field -->
+                    <label for="slot_interval_minutes" string="Generate Slots Every"/>
+                    <field name="slot_interval_minutes" 
+                           widget="float_time"
+                           nolabel="1"
+                           help="Create booking slots at regular intervals (e.g., 0:15 = every 15 minutes, 0:30 = every 30 minutes). If not set, uses default behavior."/>
+                    
+                    <!-- Legacy field hidden - deprecated in favor of booking_type dropdown -->
+                    <field name="assignee_required" invisible="1"/>
+                    
+                    <!-- Price customization field -->
+                    <field name="price_based_on_sq_ft"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- List view for appointment teams -->
+        <record id="appointment_team_view_list" model="ir.ui.view">
+            <field name="name">appointment.team.list</field>
+            <field name="model">appointment.team</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="user_count"/>
+                    <field name="appointment_type_count"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form view for appointment teams -->
+        <record id="appointment_team_view_form" model="ir.ui.view">
+            <field name="name">appointment.team.form</field>
+            <field name="model">appointment.team</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!-- Archive/unarchive buttons -->
+                        <button name="toggle_active" type="object" 
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" 
+                                   options='{"terminology": "archive"}'/>
+                        </button>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="action_view_appointment_types" icon="fa-calendar">
+                                <field string="Appointment Types" name="appointment_type_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" placeholder="Team Name"/></h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="description" placeholder="Team description..."/>
+                                <field name="color" widget="color"/>
+                            </group>
+                            <group>
+                                <field name="user_count"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Team Members">
+                                <field name="user_ids" widget="many2many">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="login"/>
+                                        <field name="tz"/>
+                                        <field name="active"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Action for appointment teams -->
+        <record id="action_appointment_team" model="ir.actions.act_window">
+            <field name="name">Appointment Teams</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">appointment.team</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first appointment team!
+                </p>
+                <p>
+                    Teams allow you to group users for multi-team booking functionality. 
+                    When customers book multi-team appointments, the system will automatically 
+                    check team availability and book complete teams.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu item for appointment teams under Appointments > Configuration -->
+        <menuitem id="menu_appointment_team"
+                  name="Teams"
+                  parent="appointment.appointment_menu_config"
+                  action="action_appointment_team"
+                  sequence="20"/>
+
+    </data>
+</odoo>

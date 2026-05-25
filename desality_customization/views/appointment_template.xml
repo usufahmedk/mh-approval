@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="appointment_form_portal_user" inherit_id="appointment.appointment_form">
+        <xpath expr="//t[@t-if='appointment_type.allow_guests']" position="before">
+            <div t-if="appointment_type.link_portal_user" class="row mb-4">
+                <label class="col-sm-3 col-form-label fw-normal" for="portal_user_display">Referral Partner</label>
+                <div class="col-sm-9">
+                    <input type="text" 
+                           class="form-control" 
+                           id="portal_user_display"
+                           t-att-value="request.env.user.partner_id.name if (request.env.user.has_group('base.group_portal') and not request.env.user._is_public()) else 'Not logged in as portal user'"
+                           readonly="1"
+                           t-att-placeholder="'Logged in as: ' + (request.env.user.partner_id.name if (request.env.user.has_group('base.group_portal') and not request.env.user._is_public()) else 'Anonymous user')"/>
+                    <input type="hidden" 
+                           name="portal_user_id" 
+                           t-att-value="request.env.user.id if (request.env.user.has_group('base.group_portal') and not request.env.user._is_public()) else ''"
+                           id="portal_user_id"/>
+                    <small class="form-text text-muted">
+                        <span t-if="request.env.user.has_group('base.group_portal') and not request.env.user._is_public()">
+                            You will be set as the referral partner for this appointment.
+                        </span>
+                        <span t-else="">
+                            No referral partner will be set (not logged in as portal user).
+                        </span>
+                    </small>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

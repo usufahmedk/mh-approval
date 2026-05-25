@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Hide the entire referral partner section when linking to opportunities -->
+    <template id="hide_referral_partner_section" inherit_id="desality_customization.appointment_form_portal_user">
+        <xpath expr="//div[@t-if='appointment_type.link_portal_user']" position="attributes">
+            <attribute name="style">display: none !important;</attribute>
+        </xpath>
+    </template>
+
+</odoo>

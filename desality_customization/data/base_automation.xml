@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Server Action for Commission Bill Creation -->
+    <record id="server_action_create_commission_bills" model="ir.actions.server">
+        <field name="name">Create Commission Bills</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                record.create_commission_bills()
+        </field>
+    </record>
+    
+    <!-- Automation Rule: Create Commission Bills when Lead is Won -->
+    <record id="automation_commission_bills_on_won" model="base.automation">
+        <field name="name">Create Commission Bills on Lead Won</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="trigger">on_write</field>
+        <field name="filter_pre_domain">[('referral_partner_id', '!=', False)]</field>
+        <field name="filter_domain">[('stage_id.is_won', '=', True)]</field>
+        <field name="action_server_ids" eval="[(6, 0, [ref('server_action_create_commission_bills')])]"/>
+    </record>
+    
+    <!-- Server Action for Snagging Task Creation -->
+    <record id="server_action_create_snagging_tasks" model="ir.actions.server">
+        <field name="name">Create Snagging Tasks</field>
+        <field name="model_id" ref="calendar.model_calendar_event"/>
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                record.create_snagging_tasks()
+        </field>
+    </record>
+    
+    <!-- Automation Rule: Create Snagging Tasks when Appointment is Confirmed -->
+    <record id="automation_snagging_tasks_on_appointment_confirmed" model="base.automation">
+        <field name="name">Create Snagging Tasks on Appointment Confirmed</field>
+        <field name="model_id" ref="calendar.model_calendar_event"/>
+        <field name="trigger">on_write</field>
+        <field name="filter_pre_domain">[('partner_ids', '!=', False), ('appointment_type_id', '!=', False)]</field>
+        <field name="filter_domain">[('partner_ids', '!=', False), ('appointment_type_id', '!=', False)]</field>
+        <field name="action_server_ids" eval="[(6, 0, [ref('server_action_create_snagging_tasks')])]"/>
+    </record>
+
+    <!-- Server Action for Adding Portal User to Attendees -->
+    <record id="server_action_add_portal_user_to_attendees" model="ir.actions.server">
+        <field name="name">Add Portal User to Attendees</field>
+        <field name="model_id" ref="calendar.model_calendar_event"/>
+        <field name="state">code</field>
+        <field name="code">
+            for record in records:
+                if record.portal_user_id:
+                    portal_partner = record.portal_user_id.partner_id
+                    # Check if portal user is already an attendee
+                    existing_attendee = record.attendee_ids.filtered(lambda a: a.partner_id == portal_partner)
+                    if not existing_attendee:
+                        # Create new attendee
+                        record.env['calendar.attendee'].create({
+                            'partner_id': portal_partner.id,
+                            'state': 'accepted',
+                            'event_id': record.id,
+                        })
+        </field>
+    </record>
+
+    <!-- Automation Rule: Add Portal User to Attendees when portal_user_id is set -->
+    <record id="automation_add_portal_user_to_attendees" model="base.automation">
+        <field name="name">Add Portal User to Attendees</field>
+        <field name="model_id" ref="calendar.model_calendar_event"/>
+        <field name="trigger">on_create_or_write</field>
+        <field name="filter_domain">[('portal_user_id', '!=', False)]</field>
+        <field name="action_server_ids" eval="[(6, 0, [ref('server_action_add_portal_user_to_attendees')])]"/>
+    </record>
+
+</odoo>

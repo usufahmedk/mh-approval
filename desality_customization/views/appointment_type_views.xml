@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="appointment_type_view_form_inherit_desality" model="ir.ui.view">
+        <field name="name">appointment.type.view.form.inherit.desality</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lead_create']" position="after">
+                <field name="partner_type"/>
+                <field name="link_portal_user"/>
+                <field name="invoice_activity_assignee_id" 
+                       invisible="not link_portal_user"
+                       domain="[('share', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
