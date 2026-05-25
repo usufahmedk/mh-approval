@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import controllers
+# Controllers module - placeholder for future API endpoints
