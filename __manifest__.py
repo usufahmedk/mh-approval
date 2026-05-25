@@ -14,7 +14,7 @@
         - WhatsApp notifications
     ''',
     'author': 'AnaConEx IT Solutions LLC',
-    'website': '',
+    'website': 'anaconex.com',
     'depends': [
         'base', 'calendar', 'crm', 'project', 'account',
         'product', 'contacts', 'website', 'sale', 'hr', 'hr_holidays',
