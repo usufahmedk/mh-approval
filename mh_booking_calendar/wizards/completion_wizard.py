@@ -36,7 +36,6 @@ class MhBookingCompletionWizard(models.TransientModel):
 
     customer_rating = fields.Integer(
         string='Customer Rating',
-        widget='priority'
     )
 
     # Notification settings for this completion

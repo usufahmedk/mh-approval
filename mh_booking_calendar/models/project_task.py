@@ -306,16 +306,13 @@ class ProjectTask(models.Model):
         return True
 
     def action_capture_signature(self):
-        """Open signature capture wizard."""
+        """Capture signature."""
         self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Capture Signature'),
-            'res_model': 'mh.signature.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_task_id': self.id},
-        }
+        self.write({
+            'signature_date': fields.Datetime.now(),
+            'signature_name': self.partner_id.name if self.partner_id else '',
+        })
+        return True
 
     def action_add_photo(self, photo_type='before'):
         """Add a photo to the task."""

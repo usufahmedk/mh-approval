@@ -60,7 +60,7 @@ class MhStaffAssignmentWizard(models.TransientModel):
             warnings = []
             if not wizard.staff_ids:
                 wizard.conflict_warning = ''
-                return
+                continue
 
             for staff in wizard.staff_ids:
                 conflicts = self._check_staff_conflicts(staff)
@@ -76,7 +76,7 @@ class MhStaffAssignmentWizard(models.TransientModel):
         for wizard in self:
             if not wizard.zone_id or not wizard.booking_date_start:
                 wizard.available_staff_count = 0
-                return
+                continue
 
             # Find available staff in zone
             staff_pool = self.env['mh.staff']

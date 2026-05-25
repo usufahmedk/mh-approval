@@ -5,7 +5,7 @@
         <!-- Booking Confirmation Email -->
         <record id="booking_confirmation_email" model="mail.template">
             <field name="name">MH Booking Confirmation</field>
-            <field name="model_id" ref="model_mh_booking"/>
+            <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
             <field name="email_from">{{ object.company_id.email or 'noreply@MHTechnical.ae' }}</field>
             <field name="subject">Booking Confirmed - {{ object.name }}</field>
             <field name="body_html" type="html">
@@ -45,7 +45,7 @@
         <!-- Booking Completion Email -->
         <record id="booking_completion_email" model="mail.template">
             <field name="name">MH Booking Completion</field>
-            <field name="model_id" ref="model_mh_booking"/>
+            <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
             <field name="email_from">{{ object.company_id.email or 'noreply@MHTechnical.ae' }}</field>
             <field name="subject">Service Completed - {{ object.name }}</field>
             <field name="body_html" type="html">
@@ -79,7 +79,7 @@
         <!-- Booking Cancellation Email -->
         <record id="booking_cancellation_email" model="mail.template">
             <field name="name">MH Booking Cancellation</field>
-            <field name="model_id" ref="model_mh_booking"/>
+            <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
             <field name="email_from">{{ object.company_id.email or 'noreply@MHTechnical.ae' }}</field>
             <field name="subject">Booking Cancelled - {{ object.name }}</field>
             <field name="body_html" type="html">

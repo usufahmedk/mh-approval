@@ -529,14 +529,8 @@ class ResPartner(models.Model):
     def action_blacklist(self):
         """Blacklist this customer."""
         self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Blacklist Customer'),
-            'res_model': 'mh.partner.blacklist.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_partner_id': self.id},
-        }
+        self.write({'is_blacklisted': True})
+        return True
 
     def action_remove_blacklist(self):
         """Remove customer from blacklist."""
