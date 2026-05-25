@@ -24,32 +24,21 @@ class MhPauseContractWizard(models.TransientModel):
     def action_confirm_pause(self):
         """Pause the contract with selected reason."""
         self.ensure_one()
-        subscription_ids = self.env.context.get('active_ids', [])
+        order_ids = self.env.context.get('active_ids', [])
 
-        if not subscription_ids:
+        if not order_ids:
             raise ValidationError(_('No subscriptions selected.'))
 
-        subscriptions = self.env['sale.subscription'].browse(subscription_ids)
+        # In Odoo 18, subscriptions are sale.order with is_subscription=True
+        subscriptions = self.env['sale.order'].browse(order_ids).filtered(
+            lambda o: o.is_subscription
+        )
 
         for subscription in subscriptions:
             subscription.write({
-                'payment_pending_pause': True,
+                'mh_paused': True,
                 'pause_reason': self.pause_reason,
                 'pause_date': fields.Date.today(),
-                'contract_notes': (
-                    subscription.contract_notes + '\n' +
-                    _('[%(date)s] Paused: %(reason)s - %(notes)s') % {
-                        'date': fields.Date.today(),
-                        'reason': self.pause_reason,
-                        'notes': self.notes or '',
-                    }
-                ) if subscription.contract_notes else _(
-                    '[%(date)s] Paused: %(reason)s - %(notes)s'
-                ) % {
-                    'date': fields.Date.today(),
-                    'reason': self.pause_reason,
-                    'notes': self.notes or '',
-                },
             })
 
         return {'type': 'ir.actions.act_window_close'}

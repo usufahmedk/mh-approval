@@ -213,20 +213,14 @@ class MHBooking(models.Model):
         readonly=True,
     )
 
-    # =====================================================================
-    # SUBSCRIPTION & PRICING
-    # =====================================================================
+    # In Odoo 18, subscriptions are sale.order records with is_subscription=True
     subscription_id = fields.Many2one(
-        'sale.subscription',
-        string='AMC Subscription',
+        'sale.order',
+        string='AMC/Subscription Order',
         ondelete='set null',
         index=True,
         tracking=True,
-    )
-    subscription_line_id = fields.Many2one(
-        'sale.subscription.line',
-        string='Subscription Line',
-        ondelete='set null',
+        domain=[('is_subscription', '=', True)],
     )
     is_amc_booking = fields.Boolean(
         string='AMC Booking',
@@ -1410,10 +1404,11 @@ class MHBooking(models.Model):
                 ]
                 self.site_address = ', '.join(filter(None, address_parts))
 
-            # Check for active subscriptions
-            subscriptions = self.env['sale.subscription'].search([
+            # Check for active subscriptions (sale.order with is_subscription=True in Odoo 18)
+            subscriptions = self.env['sale.order'].search([
                 ('partner_id', '=', self.partner_id.id),
-                ('state', '=', 'open'),
+                ('is_subscription', '=', True),
+                ('subscription_state', 'in', ['3_progress', '4_paused']),
             ])
             if subscriptions:
                 # Could show a wizard to select subscription

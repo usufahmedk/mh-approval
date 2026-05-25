@@ -152,24 +152,18 @@ class ResPartner(models.Model):
         related='property_payment_term_id',
         readonly=False,
     )
-    credit_limit = fields.Monetary(
-        string='Credit Limit',
-        related='credit_limit',
-        readonly=False,
-    )
     outstanding_balance = fields.Monetary(
         string='Outstanding Balance',
         compute='_compute_outstanding_balance',
         currency_field='currency_id',
     )
 
-    # =====================================================================
-    # SUBSCRIPTION INTEGRATION
-    # =====================================================================
+    # In Odoo 18, subscriptions are sale.order records with is_subscription=True
     subscription_ids = fields.One2many(
-        'sale.subscription',
+        'sale.order',
         'partner_id',
         string='AMC Subscriptions',
+        domain=[('is_subscription', '=', True)],
         readonly=True,
     )
     subscription_count = fields.Integer(
@@ -492,9 +486,12 @@ class ResPartner(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': _('AMC Subscriptions'),
-            'res_model': 'sale.subscription',
+            'res_model': 'sale.order',
             'view_mode': 'tree,form',
-            'domain': [('partner_id', '=', self.id)],
+            'domain': [
+                ('partner_id', '=', self.id),
+                ('is_subscription', '=', True),
+            ],
             'context': {'default_partner_id': self.id},
         }
 

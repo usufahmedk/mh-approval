@@ -26,7 +26,7 @@
         <!-- AMC Booking Generation Cron - Runs daily at 6 AM -->
         <record id="cron_amc_booking_generation" model="ir.cron">
             <field name="name">MH Subscription: Auto-generate AMC Bookings</field>
-            <field name="model_id" ref="model_sale_subscription"/>
+            <field name="model_id" ref="model_sale_order"/>
             <field name="method_name">_generate_scheduled_bookings</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
@@ -37,7 +37,7 @@
         <!-- Check Overdue AMC Visits Cron - Runs daily at 7 AM -->
         <record id="cron_check_overdue_amc" model="ir.cron">
             <field name="name">MH Subscription: Check Overdue AMC Visits</field>
-            <field name="model_id" ref="model_sale_subscription"/>
+            <field name="model_id" ref="model_sale_order"/>
             <field name="method_name">_check_overdue_amc_visits</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
@@ -48,7 +48,7 @@
         <!-- Subscription Renewal Check Cron - Runs weekly on Monday -->
         <record id="cron_subscription_renewal" model="ir.cron">
             <field name="name">MH Subscription: Check Renewal Due</field>
-            <field name="model_id" ref="model_sale_subscription"/>
+            <field name="model_id" ref="model_sale_order"/>
             <field name="method_name">_check_renewal_due</field>
             <field name="interval_number">1</field>
             <field name="interval_type">weeks</field>
