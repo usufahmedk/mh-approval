@@ -6,7 +6,7 @@
             <field name="name">mh.booking.type.tree</field>
             <field name="model">mh.booking.type</field>
             <field name="arch" type="xml">
-                <tree string="Booking Types"
+                <list string="Booking Types"
                     decoration-success="active"
                     decoration-muted="not active"
                     multi_edit="1">
@@ -184,7 +184,7 @@
             <field name="name">mh.booking.type.property.tree</field>
             <field name="model">mh.booking.type.property</field>
             <field name="arch" type="xml">
-                <tree string="Booking Type Properties"
+                <list string="Booking Type Properties"
                     decoration-success="active"
                     decoration-muted="not active">
                     <field name="sequence" widget="handle"/>

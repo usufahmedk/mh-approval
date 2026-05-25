@@ -6,7 +6,7 @@
             <field name="name">mh.staff.tree</field>
             <field name="model">mh.staff</field>
             <field name="arch" type="xml">
-                <tree string="Staff Members"
+                <list string="Staff Members"
                     decoration-success="active"
                     decoration-muted="not active"
                     multi_edit="1">
@@ -206,7 +206,7 @@
             <field name="name">mh.staff.certification.tree</field>
             <field name="model">mh.staff.certification</field>
             <field name="arch" type="xml">
-                <tree string="Certifications"
+                <list string="Certifications"
                     decoration-success="active"
                     decoration-muted="not active">
                     <field name="sequence" widget="handle"/>
@@ -267,7 +267,7 @@
             <field name="name">mh.staff.skill.tree</field>
             <field name="model">mh.staff.skill</field>
             <field name="arch" type="xml">
-                <tree string="Skills"
+                <list string="Skills"
                     decoration-success="active"
                     decoration-muted="not active">
                     <field name="sequence" widget="handle"/>
@@ -324,7 +324,7 @@
             <field name="name">mh.staff.leave.tree</field>
             <field name="model">mh.staff.leave</field>
             <field name="arch" type="xml">
-                <tree string="Staff Leaves"
+                <list string="Staff Leaves"
                     decoration-warning="state == 'pending'"
                     decoration-success="state == 'approved'"
                     decoration-danger="state == 'rejected'">

@@ -6,7 +6,7 @@
             <field name="name">mh.zone.tree</field>
             <field name="model">mh.zone</field>
             <field name="arch" type="xml">
-                <tree string="Zones"
+                <list string="Zones"
                     decoration-success="active"
                     decoration-muted="not active"
                     multi_edit="1">

@@ -6,7 +6,7 @@
             <field name="name">mh.booking.tree</field>
             <field name="model">mh.booking</field>
             <field name="arch" type="xml">
-                <tree string="Bookings"
+                <list string="Bookings"
                     decoration-success="state == 'completed'"
                     decoration-warning="state in ('confirmed', 'in_progress')"
                     decoration-muted="state in ('cancelled', 'no_show')"
@@ -93,7 +93,7 @@
                                     </group>
                                     <group string="Booking Status &amp; Flags">
                                         <field name="material_flag"/>
-                                        <field name="payment_method" widget="radio"/>
+                                        <field name="payment_method" />
                                         <field name="payment_collected"/>
                                         <field name="job_status" widget="badge"
                                             decoration-success="job_status == 'completed'"
@@ -129,12 +129,12 @@
                             <page string="Notifications" name="notifications">
                                 <group>
                                     <group string="Booking Notifications">
-                                        <field name="booking_notification_setting" widget="radio"/>
+                                        <field name="booking_notification_setting" />
                                         <field name="notify_operations_manager"/>
                                         <field name="grace_period_minutes"/>
                                     </group>
                                     <group string="Completion Notifications">
-                                        <field name="completion_notification_setting" widget="radio"/>
+                                        <field name="completion_notification_setting" />
                                     </group>
                                 </group>
                                 <group>
@@ -383,6 +383,14 @@
             <field name="res_model">mh.booking</field>
             <field name="view_mode">tree,form,calendar</field>
             <field name="domain">[('has_conflicts', '=', True)]</field>
+        </record>
+
+        <!-- MH Booking Completion Wizard Action -->
+        <record id="action_mh_booking_completion_wizard" model="ir.actions.act_window">
+            <field name="name">Complete Booking</field>
+            <field name="res_model">mh.booking.completion.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
         </record>
 
         <!-- Menu Item -->

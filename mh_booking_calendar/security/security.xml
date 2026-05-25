@@ -3,7 +3,6 @@
     <data noupdate="1">
         <record id="group_operations_manager" model="res.groups">
             <field name="name">MH Operations Manager</field>
-            <field name="category_id" ref="base.module_category_services_management"/>
         </record>
     </data>
 </odoo>

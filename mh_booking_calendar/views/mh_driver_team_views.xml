@@ -6,7 +6,7 @@
             <field name="name">mh.driver.team.tree</field>
             <field name="model">mh.driver.team</field>
             <field name="arch" type="xml">
-                <tree string="Driver Teams" decoration-success="active" decoration-muted="not active">
+                <list string="Driver Teams" decoration-success="active" decoration-muted="not active">
                     <field name="name"/>
                     <field name="code"/>
                     <field name="team_lead_id"/>
@@ -83,7 +83,7 @@
                         </group>
                         <group string="Team Members">
                             <field name="member_ids" nolabel="1">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="staff_id"/>
                                     <field name="role"/>
                                     <field name="is_active"/>
@@ -175,7 +175,7 @@
             <field name="name">mh.driver.team.member.tree</field>
             <field name="model">mh.driver.team.member</field>
             <field name="arch" type="xml">
-                <tree string="Team Members">
+                <list string="Team Members">
                     <field name="staff_id"/>
                     <field name="team_id"/>
                     <field name="role"/>
