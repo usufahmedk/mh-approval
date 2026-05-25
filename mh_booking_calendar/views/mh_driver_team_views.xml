@@ -11,7 +11,6 @@
                     <field name="code"/>
                     <field name="team_lead_id"/>
                     <field name="driver_count"/>
-                    <field name="vehicle_id"/>
                     <field name="today_booking_count"/>
                     <field name="on_time_rate"/>
                     <field name="is_on_route"/>
@@ -39,7 +38,7 @@
                             <group>
                                 <field name="active"/>
                                 <field name="team_lead_id"/>
-                                <field name="vehicle_id"/>
+                                <field name="driver_ids"/>
                             </group>
                             <group>
                                 <field name="driver_ids"/>
@@ -108,7 +107,6 @@
                     <field name="name"/>
                     <field name="code"/>
                     <field name="team_lead_id"/>
-                    <field name="vehicle_id"/>
                     <separator/>
                     <filter string="Active" name="active" domain="[('active', '=', True)]"/>
                     <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
