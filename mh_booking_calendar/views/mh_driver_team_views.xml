@@ -113,8 +113,6 @@
                     <filter string="Active" name="active" domain="[('active', '=', True)]"/>
                     <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
                     <filter string="On Route" name="on_route" domain="[('is_on_route', '=', True)]"/>
-                    <separator/>
-                    <filter string="Team Lead" name="team_lead_id" group="1"/>
                 </search>
             </field>
         </record>
