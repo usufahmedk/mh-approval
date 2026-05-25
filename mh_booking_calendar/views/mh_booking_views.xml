@@ -48,7 +48,7 @@
                     <header>
                         <button name="action_confirm" string="Confirm" type="object" class="btn-primary" invisible="state != 'draft'"/>
                         <button name="action_start" string="Start" type="object" invisible="state != 'confirmed'"/>
-                        <button name="%(action_mh_booking_completion_wizard)d" string="Complete" type="action" invisible="state not in ('confirmed', 'in_progress')"/>
+                        <button name="action_complete" string="Complete" type="object" invisible="state not in ('confirmed', 'in_progress')"/>
                         <button name="action_cancel" string="Cancel" type="object" invisible="state in ('completed', 'cancelled', 'no_show')" confirm="Are you sure you want to cancel this booking?"/>
                         <button name="action_mark_no_show" string="No Show" type="object" invisible="state != 'confirmed'"/>
                         <button name="action_send_whatsapp" string="Send WhatsApp" type="object" invisible="state in ('cancelled', 'no_show')"/>
@@ -270,7 +270,7 @@
                     <filter string="AMC Bookings" name="amc" domain="[('is_amc_booking', '=', True)]"/>
                     <filter string="One-Time Bookings" name="one_time" domain="[('is_one_time_booking', '=', True)]"/>
                     <separator/>
-                    <filter string="Booking Date" name="booking_date" date="1"/>
+                    <filter string="Booking Date" name="booking_date" date="booking_date"/>
                     <separator/>
                     <group expand="0" string="Group By" name="group_by">
                         <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"/>

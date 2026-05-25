@@ -5,7 +5,8 @@
         <record id="cron_booking_reminder" model="ir.cron">
             <field name="name">MH Booking: Send Booking Reminders</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="method_name">_send_booking_reminders</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
@@ -16,73 +17,80 @@
         <record id="cron_check_completion_time" model="ir.cron">
             <field name="name">MH Booking: Check Completion Time</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="method_name">_check_completion_time</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">30</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
 
         <!-- AMC Booking Generation Cron - Runs daily at 6 AM -->
         <record id="cron_amc_booking_generation" model="ir.cron">
             <field name="name">MH Subscription: Auto-generate AMC Bookings</field>
             <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="method_name">_generate_scheduled_bookings</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
 
         <!-- Check Overdue AMC Visits Cron - Runs daily at 7 AM -->
         <record id="cron_check_overdue_amc" model="ir.cron">
             <field name="name">MH Subscription: Check Overdue AMC Visits</field>
             <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="method_name">_check_overdue_amc_visits</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
 
         <!-- Subscription Renewal Check Cron - Runs weekly on Monday -->
         <record id="cron_subscription_renewal" model="ir.cron">
             <field name="name">MH Subscription: Check Renewal Due</field>
             <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="method_name">_check_renewal_due</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">weeks</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
 
         <!-- Staff Leave Expiry Cron - Runs daily at midnight -->
         <record id="cron_staff_leave_expiry" model="ir.cron">
             <field name="name">MH Staff: Update Leave Status</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_staff_leave"/>
-            <field name="method_name">_update_leave_status</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
 
         <!-- Zone Capacity Check Cron - Runs every hour -->
         <record id="cron_zone_capacity_check" model="ir.cron">
             <field name="name">MH Zone: Check Daily Capacity</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_zone"/>
-            <field name="method_name">_check_daily_capacity</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">1</field>
             <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
 
         <!-- Google Calendar Sync Cron - Runs every 15 minutes -->
         <record id="cron_calendar_sync" model="ir.cron">
             <field name="name">MH Booking: Sync with Google Calendar</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="method_name">_sync_google_calendar</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
@@ -93,11 +101,12 @@
         <record id="cron_whatsapp_process" model="ir.cron">
             <field name="name">MH Booking: Process WhatsApp Notifications</field>
             <field name="model_id" ref="mh_booking_calendar.model_mh_booking"/>
-            <field name="method_name">_process_whatsapp_queue</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">model.search([])</field>
             <field name="interval_number">5</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
     </data>
 </odoo>
