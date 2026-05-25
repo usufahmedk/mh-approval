@@ -83,10 +83,7 @@
                             <field name="booking_count"/>
                         </group>
                     </sheet>
-                    <div class="oe_chatter">
-                        <field name="message_follower_ids"/>
-                        <field name="activity_ids"/>
-                    </div>
+                    <chatter/>
                 </form>
             </field>
         </record>

@@ -15,6 +15,7 @@ class MHZone(models.Model):
     _description = 'MH Zone'
     _order = 'sequence, name'
     _parent_store = True
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(
         string='Zone Name',

@@ -12,6 +12,7 @@ class MHBookingType(models.Model):
     _name = 'mh.booking.type'
     _description = 'MH Booking Type'
     _order = 'sequence, name'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(
         string='Booking Type Name',
