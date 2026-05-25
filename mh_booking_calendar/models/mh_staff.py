@@ -857,6 +857,10 @@ class MHStaffLeave(models.Model):
     notes = fields.Text(
         string='Notes',
     )
+    active = fields.Boolean(
+        string='Active',
+        default=True,
+    )
     company_id = fields.Many2one(
         'res.company',
         string='Company',
