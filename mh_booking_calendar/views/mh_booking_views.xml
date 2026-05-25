@@ -223,7 +223,7 @@
             <field name="name">mh.booking.calendar</field>
             <field name="model">mh.booking</field>
             <field name="arch" type="xml">
-                <calendar date_start="booking_date_start" date_end="booking_date_end" color="zone_id">
+                <calendar date_start="booking_date_start" date_stop="booking_date_end" color="zone_id">
                     <field name="name"/>
                     <field name="partner_id"/>
                 </calendar>
