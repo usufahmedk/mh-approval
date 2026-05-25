@@ -53,7 +53,7 @@
         <record id="view_employee_search_booking" model="ir.ui.view">
             <field name="name">hr.employee.search.booking</field>
             <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="hr.view_employee_search"/>
+            <field name="inherit_id" ref="hr.employee.search"/>
             <field name="arch" type="xml">
                 <filter name="inactive" position="after">
                     <separator/>
