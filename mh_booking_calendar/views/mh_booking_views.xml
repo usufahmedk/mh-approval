@@ -35,7 +35,7 @@
                     <field name="user_id" optional="hide"/>
                     <field name="subscription_id" optional="hide"/>
                     <field name="sale_order_id" optional="hide"/>
-                </tree>
+                </list>
             </field>
         </record>
 

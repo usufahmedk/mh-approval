@@ -19,7 +19,7 @@
                     <field name="is_team_lead"/>
                     <field name="booking_count_today"/>
                     <field name="active"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -215,7 +215,7 @@
                     <field name="validity_months"/>
                     <field name="staff_count"/>
                     <field name="active"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -276,7 +276,7 @@
                     <field name="category_id"/>
                     <field name="staff_count"/>
                     <field name="active"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -336,7 +336,7 @@
                     <field name="date_to"/>
                     <field name="duration_days"/>
                     <field name="state" widget="badge"/>
-                </tree>
+                </list>
             </field>
         </record>
 

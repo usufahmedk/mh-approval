@@ -16,7 +16,7 @@
                     <field name="on_time_rate"/>
                     <field name="is_on_route"/>
                     <field name="active"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -87,7 +87,7 @@
                                     <field name="staff_id"/>
                                     <field name="role"/>
                                     <field name="is_active"/>
-                                </tree>
+                                </list>
                             </field>
                         </group>
                         <group string="Notes">
@@ -182,7 +182,7 @@
                     <field name="is_active"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
-                </tree>
+                </list>
             </field>
         </record>
 

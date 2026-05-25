@@ -20,7 +20,7 @@
                     <field name="booking_count_today"/>
                     <field name="manager_id"/>
                     <field name="active"/>
-                </tree>
+                </list>
             </field>
         </record>
 
