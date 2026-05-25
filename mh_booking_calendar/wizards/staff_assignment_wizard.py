@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 
 class MhStaffAssignmentWizard(models.TransientModel):
-    _name = 'mh.staff.assignment.wizard'
+    _name = 'mh.employee.assignment.wizard'
     _description = 'Staff Assignment Wizard'
 
     booking_id = fields.Many2one(
@@ -34,7 +34,7 @@ class MhStaffAssignmentWizard(models.TransientModel):
     )
 
     staff_ids = fields.Many2many(
-        'mh.staff',
+        'hr.employee',
         'wizard_staff_rel',
         'wizard_id',
         'staff_id',
@@ -79,7 +79,7 @@ class MhStaffAssignmentWizard(models.TransientModel):
                 continue
 
             # Find available staff in zone
-            staff_pool = self.env['mh.staff']
+            staff_pool = self.env['hr.employee']
             zone_staff = staff_pool.search([
                 ('zone_ids', 'in', wizard.zone_id.id),
                 ('active', '=', True),

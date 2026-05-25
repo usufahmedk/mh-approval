@@ -35,7 +35,7 @@ class MHDriverTeam(models.Model):
 
     # Team lead
     team_lead_id = fields.Many2one(
-        'mh.staff',
+        'hr.employee',
         string='Team Lead',
         required=True,
         index=True,
@@ -63,7 +63,7 @@ class MHDriverTeam(models.Model):
 
     # Driver members (for easy filtering)
     driver_ids = fields.Many2many(
-        'mh.staff',
+        'hr.employee',
         'mh_driver_team_driver_rel',
         'team_id',
         'driver_id',
@@ -394,7 +394,7 @@ class MHDriverTeamMember(models.Model):
         readonly=True,
     )
     staff_id = fields.Many2one(
-        'mh.staff',
+        'hr.employee',
         string='Staff Member',
         required=True,
         index=True,

@@ -19,7 +19,7 @@
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;"><strong>Service:</strong></td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ object.booking_type_id.name }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ object.product_id.name }}</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;"><strong>Date &amp; Time:</strong></td>
@@ -63,7 +63,7 @@
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;"><strong>Service:</strong></td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ object.booking_type_id.name }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ object.product_id.name }}</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;"><strong>Completed By:</strong></td>

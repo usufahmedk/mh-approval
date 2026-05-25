@@ -8,6 +8,6 @@ access_mh_zone_coverage,mh.zone.coverage,mh_booking_calendar.model_mh_zone_cover
 access_mh_resource,mh.resource,mh_booking_calendar.model_mh_resource,,1,1,1,1
 access_mh_driver_team,mh.driver.team,mh_booking_calendar.model_mh_driver_team,,1,1,1,1
 access_mh_booking_completion_wizard,mh.booking.completion.wizard,mh_booking_calendar.model_mh_booking_completion_wizard,,1,1,1,0
-access_mh_staff_assignment_wizard,mh.staff.assignment.wizard,mh_booking_calendar.model_mh_staff_assignment_wizard,,1,1,1,0
+access_mh_employee_assignment_wizard,mh.employee.assignment.wizard,mh_booking_calendar.model_mh_employee_assignment_wizard,,1,1,1,0
 access_mh_pause_contract_wizard,mh.pause.contract.wizard,mh_booking_calendar.model_mh_pause_contract_wizard,,1,1,1,0
 access_mh_pause_amc_wizard,mh.pause.amc.wizard,mh_booking_calendar.model_mh_pause_amc_wizard,,1,1,1,0

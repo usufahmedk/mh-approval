@@ -115,7 +115,7 @@ class MHZone(models.Model):
 
     # Staff assignment
     staff_ids = fields.Many2many(
-        'mh.staff',
+        'hr.employee',
         'mh_zone_staff_rel',
         'zone_id',
         'staff_id',
@@ -384,7 +384,7 @@ class MHZone(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': _('Zone Staff'),
-            'res_model': 'mh.staff',
+            'res_model': 'hr.employee',
             'view_mode': 'list,form',
             'domain': [('zone_ids', 'in', self.ids)],
         }

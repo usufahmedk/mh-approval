@@ -34,10 +34,10 @@ class ProjectTask(models.Model):
         related='booking_id.name',
         readonly=True,
     )
-    booking_type_id = fields.Many2one(
-        'mh.booking.type',
-        string='Booking Type',
-        related='booking_id.booking_type_id',
+    product_id = fields.Many2one(
+        'product.product',
+        string='Service Product',
+        related='booking_id.product_id',
         readonly=True,
     )
     booking_date = fields.Date(
@@ -63,14 +63,14 @@ class ProjectTask(models.Model):
         related='booking_id.zone_id',
         readonly=True,
     )
-    staff_ids = fields.Many2many(
-        'mh.staff',
-        string='Assigned Staff',
+    employee_ids = fields.Many2many(
+        'hr.employee',
+        string='Assigned Employees',
         related='booking_id.staff_ids',
         readonly=True,
     )
     team_lead_id = fields.Many2one(
-        'mh.staff',
+        'hr.employee',
         string='Team Lead',
         related='booking_id.team_lead_id',
         readonly=True,

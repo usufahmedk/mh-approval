@@ -56,17 +56,6 @@
             <field name="active">False</field>
         </record>
 
-        <!-- Staff Leave Expiry Cron - Runs daily at midnight -->
-        <record id="cron_staff_leave_expiry" model="ir.cron">
-            <field name="name">MH Staff: Update Leave Status</field>
-            <field name="model_id" ref="mh_booking_calendar.model_mh_staff_leave"/>
-            <field name="state">code</field>
-            <field name="code">model.search([])</field>
-            <field name="interval_number">1</field>
-            <field name="interval_type">days</field>
-            <field name="active">False</field>
-        </record>
-
         <!-- Zone Capacity Check Cron - Runs every hour -->
         <record id="cron_zone_capacity_check" model="ir.cron">
             <field name="name">MH Zone: Check Daily Capacity</field>

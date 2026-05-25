@@ -1597,7 +1597,7 @@ class MHBookingPropertyValue(models.Model):
         ondelete='cascade',
     )
     property_id = fields.Many2one(
-        'mh.booking.type.property',
+        'product.product',
         string='Property',
         required=True,
         ondelete='cascade',
