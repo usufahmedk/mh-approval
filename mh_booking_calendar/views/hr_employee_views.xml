@@ -49,21 +49,5 @@
             </field>
         </record>
 
-        <!-- Employee Search - add booking filters -->
-        <record id="view_employee_search_booking" model="ir.ui.view">
-            <field name="name">hr.employee.search.booking</field>
-            <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="hr.employee.search"/>
-            <field name="arch" type="xml">
-                <filter name="inactive" position="after">
-                    <separator/>
-                    <filter string="Cleaners" name="cleaners" domain="[('booking_role', '=', 'cleaner')]"/>
-                    <filter string="Technicians" name="technicians" domain="[('booking_role', '=', 'technician')]"/>
-                    <filter string="Drivers" name="drivers" domain="[('booking_role', '=', 'driver')]"/>
-                    <separator/>
-                    <filter string="Has Primary Zone" name="has_zone" domain="[('primary_zone_id', '!=', False)]"/>
-                </filter>
-            </field>
-        </record>
     </data>
 </odoo>
