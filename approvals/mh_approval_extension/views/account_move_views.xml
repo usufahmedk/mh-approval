@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2026 Abdalrahman Shahrour
+     License LGPL-3.0 or later (https://www.linkedin.com/in/shahrour) -->
+<odoo>
+
+    <!-- ================================================================
+         Vendor Bill / Account Move — add Submit for Approval + badge
+         ================================================================ -->
+    <record id="view_account_move_form_approval" model="ir.ui.view">
+        <field name="name">account.move.form.mh.approval</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form_revaudit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button name="action_submit_for_approval"
+                        type="object"
+                        string="Submit for Approval"
+                        class="btn-secondary"
+                        invisible="state != 'draft' or move_type != 'in_invoice' or approval_state not in ('draft', 'returned')"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_approval_requests"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-check-square-o"
+                        invisible="approval_request_count == 0">
+                    <field name="approval_request_count"
+                           string="Approvals"
+                           widget="statinfo"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//group[@name='group_top_1']" position="after">
+                <group name="group_approval" string="Approval">
+                    <field name="approval_state"
+                           readonly="1"
+                           widget="badge"
+                           decoration-info="approval_state == 'draft'"
+                           decoration-warning="approval_state == 'pending_approval'"
+                           decoration-success="approval_state == 'approved'"
+                           decoration-danger="approval_state == 'rejected'"
+                           decoration-muted="approval_state == 'returned'"
+                           invisible="move_type != 'in_invoice'"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_move_tree_approval" model="ir.ui.view">
+        <field name="name">account.move.tree.mh.approval</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_in_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="approval_state"
+                       widget="badge"
+                       optional="show"
+                       decoration-info="approval_state == 'draft'"
+                       decoration-warning="approval_state == 'pending_approval'"
+                       decoration-success="approval_state == 'approved'"
+                       decoration-danger="approval_state == 'rejected'"
+                       decoration-muted="approval_state == 'returned'"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

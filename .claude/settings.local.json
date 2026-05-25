@@ -3,7 +3,9 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:www.odoo.sh)",
-      "WebFetch(domain:www.odoo.com)"
+      "WebFetch(domain:www.odoo.com)",
+      "Read(//c/Users/usufa/OneDrive/Pictures/Screenshots 1//**)",
+      "Read(//c/Users/usufa/OneDrive/Pictures/Screenshots 1/**)"
     ]
   }
 }

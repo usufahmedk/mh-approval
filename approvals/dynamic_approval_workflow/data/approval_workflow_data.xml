@@ -107,4 +107,92 @@
         <field name="escalation_user_id" ref="base.user_admin"/>
     </record>
 
+    <!-- ================================================================
+         Purchase Order Approval Workflow
+         ================================================================ -->
+    <record id="approval_workflow_config_purchase_order" model="approval.workflow.config">
+        <field name="name">Purchase Order Approval</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="sequence">20</field>
+        <field name="domain">[]</field>
+        <field name="escalation_days">2</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="approval_workflow_stage_purchase_order_1" model="approval.workflow.stage">
+        <field name="config_id" ref="approval_workflow_config_purchase_order"/>
+        <field name="sequence">10</field>
+        <field name="name">Manager Approval</field>
+        <field name="approver_type">group</field>
+        <field name="group_id" ref="group_approval_manager"/>
+        <field name="require_all_group_members" eval="False"/>
+        <field name="escalation_user_id" ref="base.user_admin"/>
+    </record>
+
+    <!-- ================================================================
+         Expense Sheet Approval Workflow
+         ================================================================ -->
+    <record id="approval_workflow_config_expense_sheet" model="approval.workflow.config">
+        <field name="name">Expense Sheet Approval</field>
+        <field name="model_id" ref="hr_expense.model_hr_expense_sheet"/>
+        <field name="sequence">30</field>
+        <field name="domain">[]</field>
+        <field name="escalation_days">2</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="approval_workflow_stage_expense_sheet_1" model="approval.workflow.stage">
+        <field name="config_id" ref="approval_workflow_config_expense_sheet"/>
+        <field name="sequence">10</field>
+        <field name="name">Manager Approval</field>
+        <field name="approver_type">group</field>
+        <field name="group_id" ref="group_approval_manager"/>
+        <field name="require_all_group_members" eval="False"/>
+        <field name="escalation_user_id" ref="base.user_admin"/>
+    </record>
+
+    <!-- ================================================================
+         Vendor Bill (Invoice) Approval Workflow
+         ================================================================ -->
+    <record id="approval_workflow_config_account_move" model="approval.workflow.config">
+        <field name="name">Vendor Bill Approval</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="sequence">40</field>
+        <field name="domain">[('move_type', '=', 'in_invoice')]</field>
+        <field name="escalation_days">2</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="approval_workflow_stage_account_move_1" model="approval.workflow.stage">
+        <field name="config_id" ref="approval_workflow_config_account_move"/>
+        <field name="sequence">10</field>
+        <field name="name">Finance Approval</field>
+        <field name="approver_type">group</field>
+        <field name="group_id" ref="group_approval_manager"/>
+        <field name="require_all_group_members" eval="False"/>
+        <field name="escalation_user_id" ref="base.user_admin"/>
+    </record>
+
+    <!-- ================================================================
+         Vendor Payment Approval Workflow
+         ================================================================ -->
+    <record id="approval_workflow_config_account_payment" model="approval.workflow.config">
+        <field name="name">Vendor Payment Approval</field>
+        <field name="model_id" ref="account.model_account_payment"/>
+        <field name="sequence">50</field>
+        <field name="domain">[('payment_type', '=', 'outbound')]</field>
+        <field name="escalation_days">2</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="approval_workflow_stage_account_payment_1" model="approval.workflow.stage">
+        <field name="config_id" ref="approval_workflow_config_account_payment"/>
+        <field name="sequence">10</field>
+        <field name="name">Treasury Approval</field>
+        <field name="approver_type">group</field>
+        <field name="group_id" ref="group_approval_manager"/>
+        <field name="require_all_group_members" eval="False"/>
+        <field name="escalation_user_id" ref="base.user_admin"/>
+    </record>
+
 </odoo>
