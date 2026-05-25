@@ -21,11 +21,7 @@ access_mh_slot,mh.slot,mh_booking_calendar.model_mh_slot,,1,1,1,1
 access_mh_slot_availability,mh.slot.availability,mh_booking_calendar.model_mh_slot_availability,,1,1,1,1
 access_mh_driver_team,mh.driver.team,mh_booking_calendar.model_mh_driver_team,,1,1,1,1
 access_mh_driver_team_member,mh.driver.team.member,mh_booking_calendar.model_mh_driver_team_member,,1,1,1,1
-access_mh_sla,mh.sla,mh_booking_calendar.model_mh_sla,,1,1,1,1
 access_mh_booking_completion_wizard,mh.booking.completion.wizard,mh_booking_calendar.model_mh_booking_completion_wizard,,1,1,1,0
-access_mh_booking_completion_wizard_line,mh.booking.completion.wizard.line,mh_booking_calendar.model_mh_booking_completion_wizard_line,,1,1,1,0
-access_mh_booking_completion_wizard_material,mh.booking.completion.wizard.material,mh_booking_calendar.model_mh_booking_completion_wizard_material,,1,1,1,0
 access_mh_staff_assignment_wizard,mh.staff.assignment.wizard,mh_booking_calendar.model_mh_staff_assignment_wizard,,1,1,1,0
-access_mh_staff_assignment_wizard_conflict,mh.staff.assignment.wizard.conflict,mh_booking_calendar.model_mh_staff_assignment_wizard_conflict,,1,1,1,0
 access_mh_pause_contract_wizard,mh.pause.contract.wizard,mh_booking_calendar.model_mh_pause_contract_wizard,,1,1,1,0
 access_mh_pause_amc_wizard,mh.pause.amc.wizard,mh_booking_calendar.model_mh_pause_amc_wizard,,1,1,1,0
