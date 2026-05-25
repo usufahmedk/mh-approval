@@ -409,6 +409,10 @@ class MHZoneCoverage(models.Model):
         string='Code',
         index=True,
     )
+    sequence = fields.Integer(
+        string='Sequence',
+        default=10,
+    )
     active = fields.Boolean(
         string='Active',
         default=True,
