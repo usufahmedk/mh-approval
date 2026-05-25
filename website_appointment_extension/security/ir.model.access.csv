@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_appointment_team_user,appointment.team.user,model_appointment_team,base.group_user,1,0,0,0
-access_appointment_team_system,appointment.team.system,model_appointment_team,base.group_system,1,1,1,1

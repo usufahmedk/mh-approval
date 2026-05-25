@@ -13,8 +13,8 @@
         - One-time booking via Sales Orders
         - WhatsApp notifications
     ''',
-    'author': 'M&H Technical Services',
-    'website': '',
+    'author': 'AnaConEx IT Solutions LLC',
+    'website': 'anaconex.com',
     'depends': [
         'base', 'calendar', 'crm', 'project', 'account',
         'product', 'contacts', 'website', 'sale', 'hr', 'hr_holidays',

@@ -207,6 +207,12 @@ class MHBooking(models.Model):
         compute='_compute_is_amc_booking',
         store=True,
     )
+    subscription_id = fields.Many2one(
+        'sale.order',
+        string='AMC Contract',
+        compute='_compute_subscription_id',
+        store=True,
+    )
 
     # =====================================================================
     # SALE ORDER LINE INTEGRATION
@@ -666,6 +672,15 @@ class MHBooking(models.Model):
         """Determine if this is an AMC (Annual Maintenance Contract) booking."""
         for record in self:
             record.is_amc_booking = bool(record.sale_order_id and record.sale_order_id.is_subscription)
+
+    @api.depends('sale_order_id')
+    def _compute_subscription_id(self):
+        """Get the AMC subscription linked to this booking's sale order."""
+        for record in self:
+            if record.sale_order_id and record.sale_order_id.is_subscription:
+                record.subscription_id = record.sale_order_id.id
+            else:
+                record.subscription_id = False
 
     @api.depends('sale_order_id')
     def _compute_is_one_time_booking(self):
