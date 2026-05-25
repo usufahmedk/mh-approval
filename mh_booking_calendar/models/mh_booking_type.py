@@ -184,3 +184,7 @@ class MHBookingTypeProperty(models.Model):
         string='Active',
         default=True,
     )
+    description = fields.Text(
+        string='Description',
+        translate=True,
+    )
