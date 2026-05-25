@@ -17,7 +17,7 @@
     'website': '',
     'depends': [
         'base', 'calendar', 'crm', 'project', 'account',
-        'product', 'contacts', 'website', 'sale',
+        'product', 'contacts', 'website', 'sale', 'hr', 'hr_holidays',
         'sale_subscription', 'industry_fsm', 'appointment'
     ],
     'data': [

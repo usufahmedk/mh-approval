@@ -445,15 +445,35 @@ class MHStaff(models.Model):
         """
         self.ensure_one()
 
-        # Check if on leave
-        leave = self.env['mh.staff.leave'].search([
-            ('staff_id', '=', self.id),
-            ('date_from', '<=', date_end),
-            ('date_to', '>=', date_start),
-            ('state', '=', 'approved'),
-        ])
-        if leave:
-            return False, 'On leave'
+        # Check approved/ongoing Time Off from standard Odoo HR (hr.leave).
+        # We keep legacy mh.staff.leave as fallback for old data.
+        if self.employee_id and 'hr.leave' in self.env:
+            leave_model = self.env['hr.leave'].sudo()
+            leave_domain = [
+                ('state', 'in', ['confirm', 'validate1', 'validate']),
+                ('date_from', '<=', date_end),
+                ('date_to', '>=', date_start),
+            ]
+            if 'employee_ids' in leave_model._fields:
+                leave_domain.extend([
+                    '|',
+                    ('employee_id', '=', self.employee_id.id),
+                    ('employee_ids', 'in', self.employee_id.id),
+                ])
+            else:
+                leave_domain.append(('employee_id', '=', self.employee_id.id))
+            hr_leave = leave_model.search(leave_domain, limit=1)
+            if hr_leave:
+                return False, 'On leave (HR Time Off)'
+        else:
+            legacy_leave = self.env['mh.staff.leave'].search([
+                ('staff_id', '=', self.id),
+                ('date_from', '<=', date_end),
+                ('date_to', '>=', date_start),
+                ('state', '=', 'approved'),
+            ], limit=1)
+            if legacy_leave:
+                return False, 'On leave'
 
         # Check for booking conflicts
         conflict_domain = [
@@ -549,6 +569,29 @@ class MHStaff(models.Model):
             'view_mode': 'calendar',
             'domain': [('staff_ids', 'in', self.id)],
             'context': {'default_staff_ids': [(4, self.id)]},
+        }
+
+    def action_view_hr_time_off(self):
+        """Open standard Odoo Time Off records for the linked employee."""
+        self.ensure_one()
+        if not self.employee_id:
+            raise UserError(_('Please set an HR Employee first.'))
+
+        leave_model = self.env['hr.leave']
+        domain = [('employee_id', '=', self.employee_id.id)]
+        if 'employee_ids' in leave_model._fields:
+            domain = ['|', ('employee_id', '=', self.employee_id.id), ('employee_ids', 'in', self.employee_id.id)]
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Employee Time Off'),
+            'res_model': 'hr.leave',
+            'view_mode': 'tree,form,calendar',
+            'domain': domain,
+            'context': {
+                'default_employee_id': self.employee_id.id,
+                'search_default_employee_id': self.employee_id.id,
+            },
         }
 
     @api.model_create_multi

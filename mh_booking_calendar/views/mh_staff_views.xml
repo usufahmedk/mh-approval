@@ -53,6 +53,7 @@
                                 <field name="email"/>
                             </group>
                             <group string="Work Details">
+                                <field name="employee_id"/>
                                 <field name="job_title"/>
                                 <field name="department_id"/>
                                 <field name="team_id"/>
@@ -63,13 +64,8 @@
                             <field name="zone_ids" widget="many2many_tags"/>
                             <field name="primary_zone_id"/>
                         </group>
-                        <group string="Certifications &amp; Skills">
-                            <group>
-                                <field name="certification_ids" widget="many2many_tags"/>
-                            </group>
-                            <group>
-                                <field name="skill_ids" widget="many2many_tags"/>
-                            </group>
+                        <group string="Certifications">
+                            <field name="certification_ids" widget="many2many_tags"/>
                         </group>
                         <group>
                             <group string="Capacity">
@@ -82,16 +78,12 @@
                                 <field name="working_hour_end"/>
                             </group>
                         </group>
-                        <group string="Leave Management">
-                            <field name="leave_ids" nolabel="1">
-                                <list>
-                                    <field name="name"/>
-                                    <field name="leave_type_id"/>
-                                    <field name="date_from"/>
-                                    <field name="date_to"/>
-                                    <field name="state" widget="badge"/>
-                                </list>
-                            </field>
+                        <group string="HR Time Off">
+                            <button name="action_view_hr_time_off"
+                                string="Open Employee Time Off"
+                                type="object"
+                                class="btn-primary"
+                                invisible="not employee_id"/>
                         </group>
                         <group string="Statistics">
                             <group>
@@ -206,7 +198,6 @@
                 <list string="Certifications"
                     decoration-success="active"
                     decoration-muted="not active">
-                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="code"/>
                     <field name="validity_months"/>
@@ -267,7 +258,6 @@
                 <list string="Skills"
                     decoration-success="active"
                     decoration-muted="not active">
-                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="code"/>
                     <field name="category_id"/>
@@ -314,7 +304,8 @@
             name="Skills"
             action="action_mh_staff_skill"
             parent="menu_mh_staff"
-            sequence="20"/>
+            sequence="20"
+            active="False"/>
 
         <!-- MH Staff Leave Tree View -->
         <record id="view_mh_staff_leave_tree" model="ir.ui.view">
@@ -325,7 +316,6 @@
                     decoration-warning="state == 'pending'"
                     decoration-success="state == 'approved'"
                     decoration-danger="state == 'rejected'">
-                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="staff_id"/>
                     <field name="leave_type_id"/>
@@ -382,6 +372,7 @@
             name="Leaves"
             action="action_mh_staff_leave"
             parent="menu_mh_staff"
-            sequence="30"/>
+            sequence="30"
+            active="False"/>
     </data>
 </odoo>
