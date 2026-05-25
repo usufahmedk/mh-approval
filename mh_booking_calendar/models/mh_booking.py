@@ -5,7 +5,7 @@ import logging
 from datetime import datetime, timedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.date_utils import start_of, end_of, add, subtract, get_lang
+from odoo.tools.date_utils import start_of, end_of, add, subtract
 
 _logger = logging.getLogger(__name__)
 
@@ -1180,7 +1180,7 @@ class MHBooking(models.Model):
             str: Formatted message content
         """
         self.ensure_one()
-        lang = get_lang(self.env)
+        lang_code = self.env.lang or 'en_US'
 
         base_data = {
             'booking_ref': self.name,
