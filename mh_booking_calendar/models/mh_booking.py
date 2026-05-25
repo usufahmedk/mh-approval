@@ -703,9 +703,9 @@ class MHBooking(models.Model):
         for record in self:
             taxes = record.tax_ids.compute_all(
                 record.price_subtotal,
-                record.currency_id,
-                1.0,
-                product_id=record.booking_type_id.product_id,
+                currency=record.currency_id,
+                quantity=1.0,
+                product=record.booking_type_id.product_id,
                 partner=record.partner_id,
             )
             record.price_tax = sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
