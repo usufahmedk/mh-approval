@@ -725,7 +725,7 @@ class MHBooking(models.Model):
             else:
                 record.invoice_count = 0
 
-    @api.depends('task_id.invoice_ids')
+    @api.depends('task_id')
     def _compute_invoice_ids(self):
         """Compute the related invoices."""
         for record in self:
