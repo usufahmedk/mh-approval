@@ -155,12 +155,14 @@ class ProjectTask(models.Model):
     # Photos (before/after)
     photo_before_ids = fields.Many2many(
         'ir.attachment',
+        'mh_booking_photo_before_rel',
         string='Before Photos',
         domain=[('mimetype', 'ilike', 'image')],
         context={'default_mimetype': 'image/jpeg'},
     )
     photo_after_ids = fields.Many2many(
         'ir.attachment',
+        'mh_booking_photo_after_rel',
         string='After Photos',
         domain=[('mimetype', 'ilike', 'image')],
         context={'default_mimetype': 'image/jpeg'},
