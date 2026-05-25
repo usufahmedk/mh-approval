@@ -554,7 +554,7 @@ class MHStaff(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Staff Bookings'),
             'res_model': 'mh.booking',
-            'view_mode': 'tree,form,calendar',
+            'view_mode': 'list,form,calendar',
             'domain': [('staff_ids', 'in', self.id)],
             'context': {'default_staff_ids': [(4, self.id)]},
         }
@@ -586,7 +586,7 @@ class MHStaff(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Employee Time Off'),
             'res_model': 'hr.leave',
-            'view_mode': 'tree,form,calendar',
+            'view_mode': 'list,form,calendar',
             'domain': domain,
             'context': {
                 'default_employee_id': self.employee_id.id,
@@ -694,7 +694,7 @@ class MHStaffCertification(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Certified Staff'),
             'res_model': 'mh.staff',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('certification_ids', 'in', self.id)],
         }
 

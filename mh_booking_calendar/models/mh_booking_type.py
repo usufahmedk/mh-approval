@@ -128,7 +128,7 @@ class MHBookingType(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Bookings'),
             'res_model': 'mh.booking',
-            'view_mode': 'tree,form,calendar',
+            'view_mode': 'list,form,calendar',
             'domain': [('booking_type_id', '=', self.id)],
             'context': {'default_booking_type_id': self.id},
         }

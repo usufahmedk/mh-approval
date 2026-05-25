@@ -475,7 +475,7 @@ class ResPartner(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Customer Bookings'),
             'res_model': 'mh.booking',
-            'view_mode': 'tree,form,calendar',
+            'view_mode': 'list,form,calendar',
             'domain': [('partner_id', '=', self.id)],
             'context': {'default_partner_id': self.id},
         }
@@ -487,7 +487,7 @@ class ResPartner(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('AMC Subscriptions'),
             'res_model': 'sale.order',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [
                 ('partner_id', '=', self.id),
                 ('is_subscription', '=', True),
@@ -518,7 +518,7 @@ class ResPartner(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Customer Invoices'),
             'res_model': 'account.move',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [
                 ('partner_id', '=', self.id),
                 ('move_type', 'in', ['out_invoice', 'out_refund']),

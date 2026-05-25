@@ -342,7 +342,7 @@ class MHDriverTeam(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Team Bookings'),
             'res_model': 'mh.booking',
-            'view_mode': 'tree,form,calendar',
+            'view_mode': 'list,form,calendar',
             'domain': [('driver_team_id', '=', self.id)],
             'context': {'default_driver_team_id': self.id},
         }
@@ -354,7 +354,7 @@ class MHDriverTeam(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Team Members'),
             'res_model': 'mh.driver.team.member',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('team_id', '=', self.id)],
             'context': {'default_team_id': self.id},
         }

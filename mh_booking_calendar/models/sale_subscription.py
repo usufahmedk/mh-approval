@@ -192,7 +192,7 @@ class SaleOrder(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('AMC Bookings'),
             'res_model': 'mh.booking',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('sale_order_id', '=', self.id)],
         }
 

@@ -373,7 +373,7 @@ class MHZone(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Zone Bookings'),
             'res_model': 'mh.booking',
-            'view_mode': 'tree,form,calendar',
+            'view_mode': 'list,form,calendar',
             'domain': [('zone_id', 'child_of', self.id)],
             'context': {'default_zone_id': self.id},
         }
@@ -385,7 +385,7 @@ class MHZone(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Zone Staff'),
             'res_model': 'mh.staff',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('zone_ids', 'in', self.ids)],
         }
 

@@ -149,7 +149,7 @@
         <record id="action_mh_driver_team" model="ir.actions.act_window">
             <field name="name">Driver Teams</field>
             <field name="res_model">mh.driver.team</field>
-            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_mode">list,form,kanban</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create your first Driver Team
@@ -216,7 +216,7 @@
         <record id="action_mh_driver_team_member" model="ir.actions.act_window">
             <field name="name">Team Members</field>
             <field name="res_model">mh.driver.team.member</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- Menu Item -->

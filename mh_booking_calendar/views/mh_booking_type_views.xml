@@ -160,7 +160,7 @@
         <record id="action_mh_booking_type" model="ir.actions.act_window">
             <field name="name">Booking Types</field>
             <field name="res_model">mh.booking.type</field>
-            <field name="view_mode">tree,form,kanban,pivot</field>
+            <field name="view_mode">list,form,kanban,pivot</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create your first Booking Type
@@ -227,7 +227,7 @@
         <record id="action_mh_booking_type_property" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">mh.booking.type.property</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- Menu Item -->
