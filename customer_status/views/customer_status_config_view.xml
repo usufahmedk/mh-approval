@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Config list view -->
+    <record id="view_customer_status_config_tree" model="ir.ui.view">
+        <field name="name">customer.status.config.tree</field>
+        <field name="model">customer.status.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="company_id"/>
+                <field name="at_risk_days"/>
+                <field name="inactive_days"/>
+                <field name="activity_type_id"/>
+                <field name="activity_days_due"/>
+                <field name="cron_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Config form view -->
+    <record id="view_customer_status_config_form" model="ir.ui.view">
+        <field name="name">customer.status.config.form</field>
+        <field name="model">customer.status.config</field>
+        <field name="arch" type="xml">
+            <form string="Customer Status Configuration">
+                <sheet>
+                    <group string="Thresholds">
+                        <group>
+                            <field name="company_id"/>
+                            <field name="at_risk_days"/>
+                            <field name="inactive_days"/>
+                        </group>
+                        <group>
+                            <field name="cron_active"/>
+                        </group>
+                    </group>
+                    <group string="Follow-up Activity">
+                        <group>
+                            <field name="activity_type_id"/>
+                            <field name="activity_days_due"/>
+                        </group>
+                        <group>
+                            <field name="notification_user_ids"
+                                   widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group string="Booking Model">
+                        <field name="booking_model_id"
+                               placeholder="e.g. calendar.booking"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Config search view -->
+    <record id="view_customer_status_config_search" model="ir.ui.view">
+        <field name="name">customer.status.config.search</field>
+        <field name="model">customer.status.config</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="company_id"/>
+                <filter string="Active Cron" name="cron_active"
+                        domain="[('cron_active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

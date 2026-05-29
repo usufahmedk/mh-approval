@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend the partner form to show customer status fields -->
+    <record id="view_partner_form_customer_status" model="ir.ui.view">
+        <field name="name">res.partner.form.customer.status</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Status badge in the header/statusbar -->
+            <xpath expr="//field[@name='country_id']" position="before">
+                <field name="customer_status" readonly="1"
+                    widget="statusbar"
+                    statusbar_visible="active,at_risk,inactive"
+                    invisible="customer == False"/>
+            </xpath>
+
+            <!-- Customer Status notebook page -->
+            <xpath expr="//page[@name='internal_notes']" position="after">
+                <page name="customer_status" string="Customer Status"
+                      invisible="customer == False">
+                    <group>
+                        <group>
+                            <field name="customer_status" readonly="1"/>
+                            <field name="last_booking_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="last_status_change" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Extend partner tree view to show status column -->
+    <record id="view_partner_tree_customer_status" model="ir.ui.view">
+        <field name="name">res.partner.tree.customer.status</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="country_id" position="after">
+                <field name="customer_status" optional="show"
+                       invisible="customer == False"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Extend partner kanban view to show status -->
+    <record id="view_partner_kanban_customer_status" model="ir.ui.view">
+        <field name="name">res.partner.kanban.customer.status</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_record_bottom')]" position="inside">
+                <div class="o_kanban_record_bottom mt16"
+                     invisible="customer == False">
+                    <field name="customer_status" class="fw-bold"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,perm_read,perm_write,perm_create,perm_unlink
+customer_status_config_user,customer.status.config.user,customer_status.model_customer_status_config,1,1,1,1

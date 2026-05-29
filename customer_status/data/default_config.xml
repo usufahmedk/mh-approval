@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Default config: created on install, noupdate so edits are preserved on upgrade -->
+    <record id="default_customer_status_config" model="customer.status.config">
+        <field name="at_risk_days">60</field>
+        <field name="inactive_days">90</field>
+        <field name="activity_days_due">7</field>
+        <field name="cron_active">True</field>
+    </record>
+
+    <!-- Cron job to run customer status check nightly -->
+    <record id="ir_cron_check_customer_status" model="ir.cron">
+        <field name="name">Check Customer Status</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_check_customer_status()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall">0</field>
+    </record>
+</odoo>
