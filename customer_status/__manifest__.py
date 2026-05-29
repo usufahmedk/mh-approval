@@ -18,7 +18,6 @@ customer's assigned salesperson.
     "depends": [
         "base",
         "mail",
-        "mh_booking_calendar",
     ],
     "data": [
         "security/ir.model.access.csv",

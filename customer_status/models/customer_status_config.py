@@ -43,9 +43,8 @@ class CustomerStatusConfig(models.Model):
         string="Booking Model",
         default=lambda self: self._default_booking_model(),
         required=True,
-        ondelete="restrict",
-        domain=[("model", "=", "mh.booking")],
-        help="The model used to track customer bookings.",
+        ondelete="cascade",
+        help="The model used to track customer bookings. Leave empty to disable tracking.",
     )
     cron_active = fields.Boolean(
         string="Auto-check Status",
@@ -83,7 +82,7 @@ class CustomerStatusConfig(models.Model):
 
     @api.model
     def _default_booking_model(self):
-        return self.env["ir.model"].search([("model", "=", "mh.booking")], limit=1).id
+        return False
 
     @api.model
     def _get_config(self, company_id=None):

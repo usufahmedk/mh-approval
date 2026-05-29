@@ -11,3 +11,6 @@ access_mh_booking_completion_wizard,mh.booking.completion.wizard,mh_booking_cale
 access_mh_employee_assignment_wizard,mh.employee.assignment.wizard,mh_booking_calendar.model_mh_employee_assignment_wizard,,1,1,1,0
 access_mh_pause_contract_wizard,mh.pause.contract.wizard,mh_booking_calendar.model_mh_pause_contract_wizard,,1,1,1,0
 access_mh_pause_amc_wizard,mh.pause.amc.wizard,mh_booking_calendar.model_mh_pause_amc_wizard,,1,1,1,0
+access_mh_driver_team_member,mh.driver.team.member,mh_booking_calendar.model_mh_driver_team_member,,1,1,1,1
+access_mh_resource_booking_line,mh.resource.booking.line,mh_booking_calendar.model_mh_resource_booking_line,,1,1,1,1
+access_project_task_material,project.task.material,mh_booking_calendar.model_project_task_material,,1,1,1,1
