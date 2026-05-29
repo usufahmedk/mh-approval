@@ -269,11 +269,11 @@ class ResPartner(models.Model):
                         partner._create_status_activity(partner.customer_status)
 
 
-class CalendarBooking(models.Model):
-    _inherit = "calendar.booking"
+class MHBooking(models.Model):
+    _inherit = "mh.booking"
 
     def write(self, vals):
-        if {"partner_id", "start"}.isdisjoint(vals.keys()):
+        if {"partner_id", "booking_date_start"}.isdisjoint(vals.keys()):
             return super().write(vals)
 
         previous = {rec.id: rec.partner_id.id for rec in self if rec.partner_id}

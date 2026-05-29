@@ -44,7 +44,7 @@ class CustomerStatusConfig(models.Model):
         default=lambda self: self._default_booking_model(),
         required=True,
         ondelete="restrict",
-        domain=[("model", "=", "calendar.booking")],
+        domain=[("model", "=", "mh.booking")],
         help="The model used to track customer bookings.",
     )
     cron_active = fields.Boolean(
@@ -83,7 +83,7 @@ class CustomerStatusConfig(models.Model):
 
     @api.model
     def _default_booking_model(self):
-        return self.env["ir.model"].search([("model", "=", "calendar.booking")], limit=1).id
+        return self.env["ir.model"].search([("model", "=", "mh.booking")], limit=1).id
 
     @api.model
     def _get_config(self, company_id=None):
@@ -99,7 +99,7 @@ class CustomerStatusConfig(models.Model):
         """Return the field name on the booking model that holds the booking date."""
         self.ensure_one()
         model = self.env[self.booking_model_id.model]
-        date_fields = ["start", "date", "booking_date", "date_start"]
+        date_fields = ["booking_date_start", "booking_date", "start", "date"]
         for fname in date_fields:
             if fname in model._fields:
                 return fname
